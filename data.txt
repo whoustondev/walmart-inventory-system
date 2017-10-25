@@ -1,0 +1,4 @@
+Jurassic Park; Michael Chrichton; 25; Genre
+Sphere; Michael Chricton; 45; Genre
+Harry Potter; JK Rowling; 89; Genre
+1984; George Orwell; 23; Genre
