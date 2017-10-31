@@ -1,4 +1,14 @@
-Jurassic Park; Michael Chrichton; 25; Genre
-Sphere; Michael Chricton; 45; Genre
-Harry Potter; JK Rowling; 89; Genre
-1984; George Orwell; 23; Genre
+Book; Jurassic Park; Michael Chrichton; 25; SciFi
+Book; Sphere; Michael Chricton; 45; SciFi
+Book; Harry Potter; JK Rowling; 89; Fantasy
+Book; 1984; George Orwell; 23; SciFi
+Toy; Laser Challenge; 25; 6 
+Toy; Gameboy Advance; 10; 8 
+Toy; Nintendo Wii; 150; 4 
+Toy; Lego Batman; 50; 8 
+Toy; Barbie Funhouse; 20; 5
+Clothing; Polo; Ralph Lauren; Baby Blue; 20; 40; 20; 10 
+Clothing; Shorts; Ralph Lauren; Grey; 15; 20; 35; 10 
+Clothing; T-Shirt; Hanes; White; 5; 10; 20; 10 
+
+

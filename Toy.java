@@ -25,6 +25,11 @@ public class Toy extends Item
 	{
 		return name;
 	}
+	public String getTitle()
+	{
+		return name;
+	}
+	
 	public void setName(String n)
 	{
 		name = n;
