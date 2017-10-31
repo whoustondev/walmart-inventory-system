@@ -9,11 +9,10 @@ public class WalmartSystem
 {
 	
 	public LinkedList<Book> books = new LinkedList<Book>();
-	public LinkedList<Book> clothes = new LinkedList<Book>();
-	public LinkedList<Book> toys = new LinkedList<Book>();
-	public LinkedList<Book> users = new LinkedList<Book>();
+	//public LinkedList<Clothing> clothes = new LinkedList<Clothing>();
+	public LinkedList<Toy> toys = new LinkedList<Toy>();
+	//public LinkedList<User> users = new LinkedList<User>();
 
-	
 	
 	public void mainProgram()
 	{
@@ -47,33 +46,32 @@ public class WalmartSystem
 	    		
 	    	}
 	    	
-	    	books = this.gatherBooks("book", "./IT-306WalmartInventorySystem/data.txt");
+	    	books = this.gatherBooks("./IT-306WalmartInventorySystem/data.txt");
 	    	mainMenu();
 	    	System.exit(0);
 		
 	}
-	public LinkedList<Book> gatherBooks(String type, String filepath)
+	public LinkedList<Book> gatherBooks(String filepath)
 	
 	{
-		if (type.compareTo("book") == 0) 
-		{
-		    	LinkedList<Book> books = new LinkedList<Book>();
+		    	//LinkedList<Book> books = new LinkedList<Book>();
 		    	try 
-		    	{
-		    		
+		    	{	    		
 		    		BufferedReader br = new BufferedReader(new FileReader(new File(filepath)));
 		    		String line = "";
 		    		while((line = br.readLine()) != null)
 		    		{
 		    			String [] tokens = line.split(";");
-		    			if (tokens.length == 4)
+		    			System.out.println(tokens[0].trim());
+		    			System.out.println(tokens.length);
+		    			if (tokens.length == 5 && tokens[0].trim().equals(new String("Book")))
 		    			{
-		    				// we have a book!
-		    				Book a = new Book(tokens[0], tokens[1], tokens[3], Integer.parseInt(tokens[2].trim()));
-		    				books.add(a);
+		    				Book a = new Book(tokens[1], tokens[2], tokens[4], Integer.parseInt(tokens[3].trim()));
+		    				this.books.add(a);
 		    			}	
 		    		}
 		    		br.close();
+		    		return books;
 		    	}
 		    	catch(FileNotFoundException e)
 		    	{
@@ -84,10 +82,55 @@ public class WalmartSystem
 		    		f.printStackTrace();
 		    		
 		    	}				
-		    	return books;
-		}
+		    	
+		
 		return null;
 	}
+	public LinkedList<Toy> gatherToys(String filepath)
+	{
+		
+
+		    	try 
+		    	{	    		
+		    		BufferedReader br = new BufferedReader(new FileReader(new File(filepath)));
+		    		String line = "";
+		    		while((line = br.readLine()) != null)
+		    		{
+		    			if(line.contains("Toy"))
+		    			{
+			    			String [] tokens = line.split(";");
+			    			System.out.println(tokens[0].trim());
+			    			System.out.println(tokens.length);
+			    			if (tokens.length == 5 && tokens[0].trim().equals(new String("Book")))
+			    			{
+			    				Toy a = new Toy(tokens[1], tokens[2], tokens[4], Integer.parseInt(tokens[3].trim()));
+			    				toys.add(a);
+			    			}	
+		    			}
+		    		}
+		    		
+		    		br.close();
+		    		return toys;
+		    	}
+		    	catch(FileNotFoundException e)
+		    	{
+		    		e.printStackTrace();
+		    	}
+		    	catch(IOException f)
+		    	{
+		    		f.printStackTrace();
+		    		
+		    	}				
+		    	
+		
+		return null;
+		
+		
+	}
+	
+	
+	
+	
 	
 	public void mainMenu()
 	
@@ -189,42 +232,44 @@ public void viewBooks()
 {
 	
 	Object[] options1 = { "Exit", "Main Menu"};
-	String a  = "";
+	String booksString  = "<html>Title&nbsp;&nbsp;&nbsp;Author&nbsp;&nbsp;&nbsp;Quantity<br>";
 	Iterator it = books.iterator();
-	Book b;
+	Book book;
+	Object[][] rows = new Object[books.size()][4];
+	int count = 0;
+	
 	while(it.hasNext())
 	{
-		b = (Book)it.next();
-		a += b.getTitle() + "\n";
+		book = (Book)it.next();
+		//booksString += book.getTitle() + " " + book.getAuthor() + " " + book.getQuantity() + " " + "<br>";
+		rows[count][0] = book.getTitle();
+		rows[count][1] = book.getAuthor();
+		rows[count][2] = book.getQuantity();
+		rows[count][3] = book.getGenre();
 		
+		count++;
 	}
-	JPanel panel = new JPanel();
-	Label labe = new Label(a);
-	panel.add(labe);
-	panel.setBackground(Color.LIGHT_GRAY);
-	//panel.setBackground(Color.lightGray);
-	
-	//int result = JOptionPane.showOptionDialog(null, panel, "Main Menu", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, null);
-	int result = JOptionPane.showOptionDialog(null, panel, "Main Menu", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, null);
 	
 	
-	
-	
-	if (result == 1)
-	{
-		System.out.println("Main Menu");
-		mainMenu();
 		
-	
-	}
-	else if (result == 0)
-	{
-		System.out.println("Exit");
-		System.exit(0);
-				
-	}
-
-	
+		Object [] cols = {"Title","Author","Quantity", "Genre"};
+		JTable table = new JTable(rows, cols);
+		//JOptionPane.showMessageDialog(null, new JScrollPane(table));
+		int result = JOptionPane.showOptionDialog(null, new JScrollPane(table), "Books", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, null);
+		
+		if (result == 1)
+		{
+			System.out.println("Main Menu");
+			mainMenu();
+		
+		}
+		else if (result == 0)
+		{
+			System.out.println("Exit");
+			System.exit(0);
+					
+		}
+		
 	return;
 	
 	
