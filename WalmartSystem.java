@@ -258,6 +258,7 @@ public void viewItems(String type)
 		//JFrame frame = new JFrame();
 		bookList.setVisible(true);
 		
+		
 		panel.setVisible(true);
 		
 		
