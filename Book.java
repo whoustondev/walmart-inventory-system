@@ -1,10 +1,11 @@
-
+import java.util.*;
 public class Book extends Item
 {
 
 	private String author;
 	private String genre;
-	public static Object [] childClassAttributes = {"Title","Author","Quantity", "Genre"};
+	public static String [] childClassAttributes = {"Title","Author","Quantity", "Genre"};
+	Map<String, Object> attributeMap = new HashMap<String, Object>();
 	public Book(String title, String author, String genre, int quantity)
 	{
 		this.setQuantity(quantity);
@@ -12,6 +13,12 @@ public class Book extends Item
 		this.author = author;
 		this.genre = genre;
 		this.setType("Book");
+		attributeMap.put("Title", title);
+		attributeMap.put("Author", author);
+		attributeMap.put("Genre", genre);
+		attributeMap.put("Quantity", quantity);
+		
+		
 	}
 	public void setAuthor(String a)
 	{

@@ -1,3 +1,5 @@
+import java.util.HashMap;
+import java.util.Map;
 
 public class Clothing extends Item
 {
@@ -9,11 +11,12 @@ public class Clothing extends Item
 	private int qtyLarge;
 	private int qtyExtraLarge;
 	private int totalQty;
-	public static Object [] childClassAttributes = {"Title","Brand","Color", "Qty Small", "Qty Medium", "Qty Large", "Qty XL"};
-	public Clothing(String name, String brand, String color, int qtySmall, int qtyMedium, int qtyLarge, int qtyExtraLarge)
+	public static String [] childClassAttributes = {"Title","Brand","Color", "Qty Small", "Qty Medium", "Qty Large", "Qty XL"};
+	Map<String, Object> attributeMap = new HashMap<String, Object>();
+	public Clothing(String title, String brand, String color, int qtySmall, int qtyMedium, int qtyLarge, int qtyExtraLarge)
 	{
 
-		this.setTitle(name);
+		this.setTitle(title);
 		this.setType("Clothing");
 		this.color = color;
 		this.qtySmall = qtySmall;
@@ -21,6 +24,14 @@ public class Clothing extends Item
 		this.qtyLarge = qtyLarge;
 		this.qtyExtraLarge  = qtyExtraLarge;
 		this.totalQty = qtySmall + qtyMedium + qtyLarge + qtyExtraLarge;
+		attributeMap.put("Title", title);
+		attributeMap.put("Color", color);
+		attributeMap.put("Brand", brand);
+		attributeMap.put("Qty Small", qtySmall);
+		attributeMap.put("Qty Medium", qtyMedium);
+		attributeMap.put("Qty Large", qtyLarge);
+		attributeMap.put("Qty XL", qtyExtraLarge);
+		
 	}
 	
 
