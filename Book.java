@@ -1,14 +1,14 @@
 
 public class Book extends Item
 {
-	private String title;
+
 	private String author;
 	private String genre;
-	
+	public static Object [] childClassAttributes = {"Title","Author","Quantity", "Genre"};
 	public Book(String title, String author, String genre, int quantity)
 	{
 		this.setQuantity(quantity);
-		this.title = title;
+		this.setTitle(title);
 		this.author = author;
 		this.genre = genre;
 		this.setType("Book");
@@ -17,22 +17,13 @@ public class Book extends Item
 	{
 		this.author = a;
 	}
-	public void setTitle(String a)
-	{
-		this.title = a;
-	}
 	public void setGenre(String a)
 	{
 		this.genre = a;
 	}
-	public String getTitle()
-	{
-		
-		return title;
-	}
+
 	public String getAuthor()
-	{
-		
+	{		
 		return author;
 	}
 	public String getGenre()
@@ -40,6 +31,19 @@ public class Book extends Item
 		
 		return genre;
 	}
-
+	public Object getAttributeByIndex(int index)
+	{
+		if(index == 0)
+			return getTitle();
+		else if(index == 1)
+			return getAuthor();
+		else if(index == 2)
+			return getQuantity();
+		else if(index == 3)
+			return getGenre();
+	
+		
+		return null;
+	}
 	
 }

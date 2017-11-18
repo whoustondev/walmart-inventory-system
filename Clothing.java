@@ -1,7 +1,7 @@
 
 public class Clothing extends Item
 {
-	private String name;
+	
 	private String brand;
 	private String color;
 	private int qtySmall;
@@ -9,11 +9,11 @@ public class Clothing extends Item
 	private int qtyLarge;
 	private int qtyExtraLarge;
 	private int totalQty;
-	
+	public static Object [] childClassAttributes = {"Title","Brand","Color", "Qty Small", "Qty Medium", "Qty Large", "Qty XL"};
 	public Clothing(String name, String brand, String color, int qtySmall, int qtyMedium, int qtyLarge, int qtyExtraLarge)
 	{
 
-		this.name = name;
+		this.setTitle(name);
 		this.setType("Clothing");
 		this.color = color;
 		this.qtySmall = qtySmall;
@@ -23,16 +23,9 @@ public class Clothing extends Item
 		this.totalQty = qtySmall + qtyMedium + qtyLarge + qtyExtraLarge;
 	}
 	
-	public void setTitle(String title)
-	{
-		this.name = name;
-	}
+
 	
-	public String getName()
-	{
-		return name;
-	}
-	
+
 	public void setBrand(String brand)
 	{
 		this.brand = brand;
@@ -91,5 +84,35 @@ public class Clothing extends Item
 		return qtyExtraLarge;
 	}	
 	
+	/**
+	 * This is a function that returns an attribute to an index. 
+	 * See the childClassAttributes array. Title is index 0. Brand is index 1. Color is index 3. (and so forth)
+	 * This function is to be used in conjunction with the view<Items> methods - It is necessary for creating a Jtable also it appears..
+	 * For example, view books uses it. viewClothes as well
+	 * @param index
+	 * @return
+	 */
+	
+	public Object getAttributeByIndex(int index)
+	{
+		if(index == 0)
+			return getTitle();
+		else if(index == 1)
+			return getBrand();
+		else if(index == 2)
+			return getColor();
+		else if(index == 3)
+			return getQtySmall();
+		else if(index == 4)
+			return getQtyMedium();
+		else if(index == 5)
+			return getQtyMedium();
+		else if(index == 6)
+			return getQtyLarge();
+		else if(index == 6)
+			return getQtyExtraLarge();
+		
+		return null;
+	}
 	
 }

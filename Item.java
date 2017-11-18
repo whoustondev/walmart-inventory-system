@@ -4,7 +4,16 @@ public abstract class Item
 	private int quantity;
 	private String type;
 	private int totalItemsSold;
+	private String title;
 	
+	public void setTitle(String title)
+	{
+		this.title = title;
+	}
+	public String getTitle()
+	{
+		return title;
+	}
 	public void setQuantity(int n)
 	{
 		this.quantity = n;

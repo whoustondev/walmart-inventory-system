@@ -2,16 +2,13 @@
 public class Toy extends Item
 {
 	private int recommendedAge;
-	String name;
-	
+	public static Object [] childClassAttributes = {"Title","Quantity","Recommended Age"};
 	public Toy(String name, int quantity, int recommendedAge )
 	{
 		this.setQuantity(quantity);
 		this.recommendedAge = recommendedAge;
-		this.name = name;
-		this.setType("Toy");
-		
-		
+		this.setTitle(name);
+		this.setType("Toy");		
 	}
 	public int getRecAge()
 	{
@@ -21,17 +18,17 @@ public class Toy extends Item
 	{
 		recommendedAge = n;
 	}
-	public String getName()
+	public Object getAttributeByIndex(int index)
 	{
-		return name;
-	}
-	public String getTitle()
-	{
-		return name;
-	}
+		if(index == 0)
+			return getTitle();
+		else if(index == 1)
+			return getQuantity();
+		else if(index == 2)
+			return getRecAge();
 	
-	public void setName(String n)
-	{
-		name = n;
-	}	
+		
+		return null;
+	}
+
 }

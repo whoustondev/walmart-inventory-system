@@ -9,16 +9,17 @@ public class WalmartSystem
 {
 	
 	Object[] options1 = { "Exit", "Main Menu"};
+	Object[] optionsWithSort = { "Exit", "Main Menu", "Sort Descending", "Sort Ascending",};
+	
 	public LinkedList<Book> books = new LinkedList<Book>();
 	public LinkedList<Clothing> clothes = new LinkedList<Clothing>();
 	public LinkedList<Toy> toys = new LinkedList<Toy>();
 	//public LinkedList<User> users = new LinkedList<User>();
 
 	
-	public void mainProgram()
+	public void run()
 	{
-		
-	    Object[] options2 = { "Cancel", "Login",};
+		Object[] options2 = { "Cancel", "Login",};
 
 	    	JPanel panel = new JPanel();
 	    	panel.setBackground(Color.lightGray);
@@ -33,13 +34,14 @@ public class WalmartSystem
 	    	
 	    	int result = JOptionPane.showOptionDialog(null, panel, "Login Page", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options2, null);
 	    	this.gatherItems("./IT-306WalmartInventorySystem/data.txt");   
-	    	resultHandler(result);
+	    	this.resultHandler(result, null, null);
 
-	    	System.exit(0);	
+    	System.exit(0);	
 	}
 	/**
 	 * This is a function that goes through the database
 	 * Then, it adds all the items to their respective LinkedLists which are declared above.
+	 * This is not a very  modular fuction, but hey we have no choice really. 
 	 * 
 	 * @param filepath
 	 */
@@ -95,7 +97,7 @@ public class WalmartSystem
 	    		f.printStackTrace();	
 	    	}	
 	    	
-	return;
+	    	return;
 	}
 
 
@@ -113,7 +115,7 @@ public class WalmartSystem
     		if (result == 5)
     		{
     			System.out.println("View Items");
-    			viewItems();
+    			viewItemsJPanel();
     		}
     		else if (result == 4)
     		{
@@ -140,7 +142,7 @@ public class WalmartSystem
 		return;
 	}
 
-public void viewItems()
+public void viewItemsJPanel()
 {
 	// This function provides a JPanel for the main options to choose from 
 
@@ -154,18 +156,18 @@ public void viewItems()
 	if (result == 4)
 	{
 		System.out.println("View Clothes");
-		viewClothing();
+		viewItems("Clothing");
 	}
 	else if (result == 3)
 	{
 		System.out.println("View Toys");
-		viewToys();
+		viewItems("Toy");
 
 	}
 	else if (result == 2)
 	{
 		System.out.println("View Books");
-		viewBooks();
+		viewItems("Book");
 
 	}
 	else if (result == 1)
@@ -177,119 +179,388 @@ public void viewItems()
 	else if (result == 0)
 	{
 		System.exit(0);
-
 	}
-	
-	
-	return;
-	
-	
+	return;	
 }
 
 
-public void viewBooks()
+
+public void viewItems(String type)
 {
 	
-	
-	Iterator it = books.iterator();
-	Book book;
-	Object[][] rows = new Object[books.size()][4];
-	int count = 0;
-	
-	while(it.hasNext())
-	{
-		book = (Book)it.next();
-		rows[count][0] = book.getTitle();
-		rows[count][1] = book.getAuthor();
-		rows[count][2] = book.getQuantity();
-		rows[count][3] = book.getGenre();
-		
-		count++;
+	Iterator it = null; 
+	Clothing clothing = null;
+	Toy toy = null;
+	Book book = null;
+	Item item;
+	Object[][] rows = null;
+	Object[] cols = null;
+	int numberOfColumns = 3;
+	if(type.equals("Clothing"))
+	{	
+		numberOfColumns = Clothing.childClassAttributes.length;
+		rows = new Object[clothes.size()][numberOfColumns];
+	 	it = clothes.iterator();
+	 	cols = Clothing.childClassAttributes;
+	 	
 	}
-	
-	Object [] cols = {"Title","Author","Quantity", "Genre"};
-	JTable table = new JTable(rows, cols);
-	//JOptionPane.showMessageDialog(null, new JScrollPane(table));
-	int result = JOptionPane.showOptionDialog(null, new JScrollPane(table), "Books", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, null);
-	
-	resultHandler(result);
-		
-	return;
-	
-}
-public void viewToys()
-{
-	
-	Iterator it = toys.iterator();
-	Toy toy;
-	Object[][] rows = new Object[toys.size()][3];
-	int count = 0;
-	
-	while(it.hasNext())
-	{
-		toy = (Toy)it.next();
-		rows[count][0] = toy.getName();
-		rows[count][1] = toy.getQuantity();
-		rows[count][2] = toy.getRecAge();
-		count++;
+	else if(type.equals("Toy"))
+	{	
+		 numberOfColumns = Toy.childClassAttributes.length;
+		 rows = new Object[toys.size()][numberOfColumns];
+		 it = toys.iterator();
+		 cols = Toy.childClassAttributes;
 	}
-	
-	Object [] cols = {"Title","Quantity","Recommended Age"};
-	JTable table = new JTable(rows, cols);
-
-	int result = JOptionPane.showOptionDialog(null, new JScrollPane(table), "Toys", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, null);
-	resultHandler(result);
-
-	return;
-	
-	
-	
-}
-
-public void viewClothing()
-{
-	
-	Iterator it = clothes.iterator();
-	Clothing clothing;
-	Object[][] rows = new Object[clothes.size()][7];
-	int count = 0;
-	
-	while(it.hasNext())
+	else if(type.equals("Book"))
 	{
-		clothing = (Clothing)it.next();
-		rows[count][0] = clothing.getName();
-		rows[count][1] = clothing.getBrand();
-		rows[count][2] = clothing.getColor();
-		rows[count][3] = clothing.getQtySmall();
-		rows[count][4] = clothing.getQtyMedium();
-		rows[count][5] = clothing.getQtyLarge();
-		rows[count][6] = clothing.getQtyExtraLarge();
-		
-		count++;
-	}
-	
-	Object [] cols = {"Name","Brand","Color", "Qty Small", "Qty Medium", "Qty Large", "Qty XL"};
-	JTable table = new JTable(rows, cols);
+		numberOfColumns = Book.childClassAttributes.length;	
+		rows = new Object[books.size()][numberOfColumns];
+		it = books.iterator();
+		cols = Book.childClassAttributes;
 
-	int result = JOptionPane.showOptionDialog(null, new JScrollPane(table), "Toys", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, null);
-	resultHandler(result);
+	}
+
+	int count = 0;
+	if(it == null)
+		return;
+	else
+	{
+		while(it.hasNext())
+		{	if(type.equals("Clothing"))
+				clothing = (Clothing)it.next();
+			else if(type.equals("Toy"))
+				toy = (Toy)it.next();
+			else if(type.equals("Book"))
+				book= (Book)it.next();
+			int i = 0;
+			while(i < numberOfColumns)
+			{
+				if(type.equals("Book"))
+					rows[count][i] = book.getAttributeByIndex(i);
+				else if(type.equals("Toy"))
+					rows[count][i] = toy.getAttributeByIndex(i);
+				if(type.equals("Clothing"))
+					rows[count][i] = clothing.getAttributeByIndex(i);
+				
+				i++;
+			}
+			count++;
+		}
+		
+		JPanel frame = new JPanel();
+		JTable table = new JTable(rows, cols);
+		frame.add(new JScrollPane(table));
+		
+		JComboBox bookList = new JComboBox(cols);
+
+		frame.add(bookList);
+		bookList.setBounds(50, 100,90,20);  
+		//JFrame frame = new JFrame();
+		bookList.setVisible(true);
+		frame.setVisible(true);
+		String selection = (String) bookList.getSelectedItem();
+
+		
+		
+		
+		
+		
+		int result = JOptionPane.showOptionDialog(null, frame, "Books", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, optionsWithSort, null);
+			
+		resultHandler(result, type, selection);
+	}
 
 	return;
-	
-	
-	
+		
 }
+
 
 
 /**
- * There exist two options very often - Exit and Main Menu. 
- * All this does is evaluate the result 1 or 0 and either exits or goes back to the main menu accordingly. 
- * @param result
+ * A function that takes a linkedlist of items and sorts it by title. 
+ * We are making this static so people can use it regardless on any kind of linkedList
+ * This is also modular as to keep us from getting confused.
+ * No matter what
+ * 
  */
-public void resultHandler(int result)
+
+public static LinkedList sortByTitle(LinkedList a, boolean ascending)
 {
+	Item[] array = new Item[a.size()];
+	Iterator it = a.iterator();
+	//it.next();
+	for(int i = 0; i< array.length; i++)
+	{
+		array[i] = (Item)a.get(i);	
+	}
 	
-	if (result == 1)
+	for(int i=0; i<a.size(); i++)
+	{
+		int k = i;
+		if(ascending == true)
+		{
+			
+			while( k > 0 && array[k].getTitle().compareTo(array[k-1].getTitle()) <= 0)			
+			{
+				System.out.println(k);
+				Item temp = array[k];
+				array[k] = array[k-1];
+				array[k-1] = temp;
+				k--;
+			}
+		}
+		else // if we want descending
+		{
+			
+			while( k > 0 && array[k-1].getTitle().compareTo(array[k].getTitle()) <= 0)			
+			{
+				System.out.println(k);
+				Item temp = array[k];
+				array[k] = array[k-1];
+				array[k-1] = temp;
+				k--;
+			}	
+		}
+	}
+	
+	LinkedList listToReturn = new LinkedList();
+	for(int i = 0; i < array.length; i++)
+	{
+		//System.out.println(((Book)array[i]).getTitle());	
+		listToReturn.add(array[i]);
+	}
+	
+	return listToReturn;
+}
+
+
+public static LinkedList sortByQuantity(LinkedList a, boolean ascending)
+{
+	Item[] array = new Item[a.size()];
+	Iterator it = a.iterator();
+	//it.next();
+	for(int i = 0; i< array.length; i++)
+	{
+		array[i] = (Item)a.get(i);	
+	}
+	
+	for(int i=0; i<a.size(); i++)
+	{
+		int k = i;
+		if(ascending == true)
+		{
+			
+			while( k > 0 && array[k].getQuantity() <= array[k-1].getQuantity())			
+			{
+				System.out.println(k);
+				Item temp = array[k];
+				array[k] = array[k-1];
+				array[k-1] = temp;
+				k--;
+			}
+		}
+		else // if we want descending
+		{
+			
+			while( k > 0 && array[k-1].getQuantity() <= array[k].getQuantity())			
+			{
+				System.out.println(k);
+				Item temp = array[k];
+				array[k] = array[k-1];
+				array[k-1] = temp;
+				k--;
+			}	
+		}
+	}
+	
+	LinkedList listToReturn = new LinkedList();
+	for(int i = 0; i < array.length; i++)
+	{
+		//System.out.println(((Book)array[i]).getTitle());	
+		listToReturn.add(array[i]);
+	}
+	
+	return listToReturn;
+}
+public static LinkedList sortByGenre(LinkedList a, boolean ascending)
+{
+	Item[] array = new Item[a.size()];
+	Iterator it = a.iterator();
+	//it.next();
+	for(int i = 0; i< array.length; i++)
+	{
+		array[i] = (Item)a.get(i);	
+	}	
+	for(int i=0; i<a.size(); i++)
+	{
+		int k = i;
+		if(ascending == true)
+		{			
+			while( k > 0 && ((Book)array[k]).getGenre().compareTo(((Book)array[k-1]).getGenre())	<= 0 )		
+			{
+				System.out.println(k);
+				Item temp = array[k];
+				array[k] = array[k-1];
+				array[k-1] = temp;
+				k--;
+			}
+		}
+		else // if we want descending
+		{		
+			while( k > 0 && ((Book)array[k-1]).getGenre().compareTo(((Book)array[k]).getGenre())	<= 0 )			
+			{
+				System.out.println(k);
+				Item temp = array[k];
+				array[k] = array[k-1];
+				array[k-1] = temp;
+				k--;
+			}	
+		}
+	}
+	
+	LinkedList listToReturn = new LinkedList();
+	for(int i = 0; i < array.length; i++)
+	{
+		//System.out.println(((Book)array[i]).getTitle());	
+		listToReturn.add(array[i]);
+	}
+	
+	return listToReturn;
+}
+public static LinkedList sortByAuthor(LinkedList a, boolean ascending)
+{
+	Item[] array = new Item[a.size()];
+	Iterator it = a.iterator();
+	//it.next();
+	for(int i = 0; i< array.length; i++)
+	{
+		array[i] = (Item)a.get(i);	
+	}
+	
+	for(int i=0; i<a.size(); i++)
+	{
+		int k = i;
+		if(ascending == true)
+		{
+			
+			while( k > 0 && ((Book)array[k]).getAuthor().compareTo(((Book)array[k-1]).getAuthor())<= 0 )		
+			{
+				System.out.println(k);
+				Item temp = array[k];
+				array[k] = array[k-1];
+				array[k-1] = temp;
+				k--;
+			}
+		}
+		else // if we want descending
+		{
+			
+			while( k > 0 && ((Book)array[k-1]).getAuthor().compareTo(((Book)array[k]).getAuthor()) <= 0 )			
+			{
+				System.out.println(k);
+				Item temp = array[k];
+				array[k] = array[k-1];
+				array[k-1] = temp;
+				k--;
+			}	
+		}
+	}
+	
+	LinkedList listToReturn = new LinkedList();
+	for(int i = 0; i < array.length; i++)
+	{
+		//System.out.println(((Book)array[i]).getTitle());	
+		listToReturn.add(array[i]);
+	}
+	
+	return listToReturn;
+}
+/**
+ * There exist the options - Exit and Main Menu. 
+ * @param result
+ * @param LinkedList
+ * 
+ * Added  a LinkedList as an argument because to use resulthandler with the sorting functionality, 
+ * we need to be able to know what kind of elements we are sorting. Previously, resulthandler was just used to exit or go back to the main menu
+ * Now, resulthandler is used for sorting as well under the options available for viewing items (view books, view toys, view clothing)
+ */
+public void resultHandler(int result, String whatItemType, String sortCriteria)
+{
+	if (result == 3) // someone hits the sort ascending button
+	{
+		System.out.println("Sort Ascending");
+		if(whatItemType.equals("Book"))
+		{
+			if( sortCriteria.equals("Title") || sortCriteria.equals("title"))
+				{
+					books = sortByTitle(books, true);
+					
+				}
+			else if( sortCriteria.equals("Quantity") || sortCriteria.equals("quantity"))
+				{
+					books = sortByQuantity(books, true);
+					
+				}
+			else if( sortCriteria.equals("genre") || sortCriteria.equals("Genre"))
+				{
+					
+					books = sortByGenre(books, true);
+				}
+			else if( sortCriteria.equals("Author") || sortCriteria.equals("Author"))
+			{
+				
+				books = sortByAuthor(books, true);
+			}
+			
+			viewItems("Book");
+		}
+			
+		else if (whatItemType.equals("Clothing"))
+		{
+			clothes = sortByTitle(clothes, true);
+			viewItems("Clothing");
+		}
+			
+		else if (whatItemType.equals("Toy"))
+		{
+			toys = sortByTitle(toys, true);
+			viewItems("Toy");
+			
+		}	
+	}
+	else if (result == 2) // Someone hits the sort descending button
+	{
+		System.out.println("Sort Descending");
+		
+		if(whatItemType.equals("Book"))
+		{	
+			if( sortCriteria.equals("Title") || sortCriteria.equals("title"))
+				books = sortByTitle(books, false);
+			else if( sortCriteria.equals("Quantity") || sortCriteria.equals("quantity"))
+				books = sortByQuantity(books, false);
+			else if( sortCriteria.equals("genre") || sortCriteria.equals("Genre"))
+				books = sortByGenre(books, false);
+			else if( sortCriteria.equals("Author") || sortCriteria.equals("Author"))
+				books = sortByAuthor(books, false);
+	
+			viewItems("Book");
+		}
+			
+		else if (whatItemType.equals("Clothing"))
+		{
+			clothes = sortByTitle(clothes, false);
+			viewItems("Clothing");
+		}
+			
+		else if (whatItemType.equals("Toy"))
+		{
+			toys = sortByTitle(toys, false);
+			viewItems("Toy");
+			
+		}
+	
+	}
+	else if (result == 1)
 	{
 		System.out.println("Main Menu");
 		mainMenu();
