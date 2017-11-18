@@ -247,26 +247,27 @@ public void viewItems(String type)
 			count++;
 		}
 		
-		JPanel frame = new JPanel();
+		JPanel panel = new JPanel();
 		JTable table = new JTable(rows, cols);
-		frame.add(new JScrollPane(table));
+		panel.add(new JScrollPane(table));
 		
 		JComboBox bookList = new JComboBox(cols);
 
-		frame.add(bookList);
+		panel.add(bookList);
 		bookList.setBounds(50, 100,90,20);  
 		//JFrame frame = new JFrame();
 		bookList.setVisible(true);
-		frame.setVisible(true);
+		panel.setVisible(true);
+		
+		
+		
+		
+		
+		
+		int result = JOptionPane.showOptionDialog(null, panel, "Books", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, optionsWithSort, null);
+		
 		String selection = (String) bookList.getSelectedItem();
-
-		
-		
-		
-		
-		
-		int result = JOptionPane.showOptionDialog(null, frame, "Books", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, optionsWithSort, null);
-			
+		System.out.println("going to sort the..." + selection);
 		resultHandler(result, type, selection);
 	}
 
@@ -314,7 +315,7 @@ public static LinkedList sortByTitle(LinkedList a, boolean ascending)
 			
 			while( k > 0 && array[k-1].getTitle().compareTo(array[k].getTitle()) <= 0)			
 			{
-				System.out.println(k);
+				//System.out.println(k);
 				Item temp = array[k];
 				array[k] = array[k-1];
 				array[k-1] = temp;
