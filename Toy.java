@@ -1,14 +1,21 @@
+import java.util.HashMap;
+import java.util.Map;
 
 public class Toy extends Item
 {
 	private int recommendedAge;
-	public static Object [] childClassAttributes = {"Title","Quantity","Recommended Age"};
-	public Toy(String name, int quantity, int recommendedAge )
+	public static String [] childClassAttributes = {"Title","Quantity","Recommended Age"};
+	Map<String, Object> attributeMap = new HashMap<String, Object>();
+	public Toy(String title, int quantity, int recommendedAge )
 	{
 		this.setQuantity(quantity);
 		this.recommendedAge = recommendedAge;
-		this.setTitle(name);
+		this.setTitle(title);
 		this.setType("Toy");		
+		attributeMap.put("Title", title);
+		attributeMap.put("Recommended Age", recommendedAge);
+		attributeMap.put("Quantity", quantity);
+
 	}
 	public int getRecAge()
 	{

@@ -5,6 +5,20 @@ import java.awt.event.*;
 import javax.*;
 import java.io.*;
 import java.util.*;
+/**
+ *  TODO: Leftover tasks
+ *  1. Make the buttons for sorting right underneath the drop down (ascend and descend)
+ *	2. Finish the username and password database check prob. a map.
+ *	3. See if there is a way to hide values in the JTextField that holds a password
+ *	4. Make sure you can use the sorting algo by itself by passing null values to stuff you don't use
+ *		we want modularity in this program - so we should be able  to pass a LinkedList and sort 
+ *	5. Order new Items.
+ *	6. Add a new Product.
+ *	7. Search (filter
+ *	8. Make it so that you can 
+ *	9. fix buttons so that the quit button is on the left and that one of the buttons is highlighted
+ *	10. Make it so that the title drop down isn't always on the default (Title but whatever the last choice was)
+ */
 public class WalmartSystem
 {
 	
@@ -15,7 +29,15 @@ public class WalmartSystem
 	public LinkedList<Clothing> clothes = new LinkedList<Clothing>();
 	public LinkedList<Toy> toys = new LinkedList<Toy>();
 	//public LinkedList<User> users = new LinkedList<User>();
-
+	/**
+	 * I hate every but of this
+	 * but for now, these three ints help me keep track of the last index that was chosen in the sorting drop down. 
+	 * Otherwise, the default will always be Title even after you select and then sort something else
+	 */
+	String lastClothingSortingSelection = "";
+	String lastToySortingSelection = "";
+	String lastBookSortingSelection = "";
+	
 	
 	public void run()
 	{
@@ -115,7 +137,7 @@ public class WalmartSystem
     		if (result == 5)
     		{
     			System.out.println("View Items");
-    			viewItemsJPanel();
+    			viewItemOptionsJPanel();
     		}
     		else if (result == 4)
     		{
@@ -137,12 +159,11 @@ public class WalmartSystem
     		{
     			System.out.println("result was 0");
     			System.exit(0);
-    		}
-			
+    		}			
 		return;
 	}
 
-public void viewItemsJPanel()
+public void viewItemOptionsJPanel()
 {
 	// This function provides a JPanel for the main options to choose from 
 
@@ -183,11 +204,12 @@ public void viewItemsJPanel()
 	return;	
 }
 
-
-
+/**
+ * Tell this function what type of item you want to view. 
+ * @param type
+ */
 public void viewItems(String type)
 {
-	
 	Iterator it = null; 
 	Clothing clothing = null;
 	Toy toy = null;
@@ -195,6 +217,7 @@ public void viewItems(String type)
 	Item item;
 	Object[][] rows = null;
 	Object[] cols = null;
+	JComboBox bookList = null;
 	int numberOfColumns = 3;
 	if(type.equals("Clothing"))
 	{	
@@ -202,7 +225,9 @@ public void viewItems(String type)
 		rows = new Object[clothes.size()][numberOfColumns];
 	 	it = clothes.iterator();
 	 	cols = Clothing.childClassAttributes;
-	 	
+	 	bookList= new JComboBox(cols);
+	 	System.out.println("our last selection was...." + lastClothingSortingSelection );
+	 	bookList.setSelectedItem(lastClothingSortingSelection);
 	}
 	else if(type.equals("Toy"))
 	{	
@@ -210,6 +235,9 @@ public void viewItems(String type)
 		 rows = new Object[toys.size()][numberOfColumns];
 		 it = toys.iterator();
 		 cols = Toy.childClassAttributes;
+		 bookList = new JComboBox(cols);
+		 System.out.println("our last selection was...." + lastToySortingSelection );
+		 bookList.setSelectedItem(lastToySortingSelection);
 	}
 	else if(type.equals("Book"))
 	{
@@ -217,7 +245,9 @@ public void viewItems(String type)
 		rows = new Object[books.size()][numberOfColumns];
 		it = books.iterator();
 		cols = Book.childClassAttributes;
-
+		bookList = new JComboBox(cols);
+		System.out.println("our last selection was...." + lastBookSortingSelection );
+		bookList.setSelectedItem(lastBookSortingSelection);
 	}
 
 	int count = 0;
@@ -227,11 +257,13 @@ public void viewItems(String type)
 	{
 		while(it.hasNext())
 		{	if(type.equals("Clothing"))
-				clothing = (Clothing)it.next();
+			{
+				clothing = (Clothing)it.next();			
+			}
 			else if(type.equals("Toy"))
 				toy = (Toy)it.next();
 			else if(type.equals("Book"))
-				book= (Book)it.next();
+				book = (Book)it.next();
 			int i = 0;
 			while(i < numberOfColumns)
 			{
@@ -240,8 +272,7 @@ public void viewItems(String type)
 				else if(type.equals("Toy"))
 					rows[count][i] = toy.getAttributeByIndex(i);
 				if(type.equals("Clothing"))
-					rows[count][i] = clothing.getAttributeByIndex(i);
-				
+					rows[count][i] = clothing.getAttributeByIndex(i);			
 				i++;
 			}
 			count++;
@@ -251,51 +282,176 @@ public void viewItems(String type)
 		JTable table = new JTable(rows, cols);
 		panel.add(new JScrollPane(table));
 		
-		JComboBox bookList = new JComboBox(cols);
-
+		
 		panel.add(bookList);
 		bookList.setBounds(50, 100,90,20);  
 		//JFrame frame = new JFrame();
 		bookList.setVisible(true);
 		
-		
-		panel.setVisible(true);
-		
-		
-		
-		
-		
-		
-		int result = JOptionPane.showOptionDialog(null, panel, "Books", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, optionsWithSort, null);
-		
+		panel.setVisible(true);		
+		int result = JOptionPane.showOptionDialog(null, panel, "Looking at"+type+"s", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, optionsWithSort, null);	
 		String selection = (String) bookList.getSelectedItem();
 		System.out.println("going to sort the..." + selection);
+		if(type.equals("Clothing"))
+		{	System.out.println("made it where i needed to");
+			lastClothingSortingSelection = selection;		
+			System.out.println(lastClothingSortingSelection);
+		}
+		else if(type.equals("Toy"))
+		{
+			System.out.println("made it where i needed to");
+			lastBookSortingSelection = selection;
+			System.out.println(lastToySortingSelection);
+		}
+		else if(type.equals("Book"))
+		{
+			System.out.println("made it where i needed to");
+			lastToySortingSelection = selection;
+			System.out.println(lastBookSortingSelection);
+		}
+		
+	
 		resultHandler(result, type, selection);
 	}
-
-	return;
-		
+	return;	
 }
-
-
-
 /**
- * A function that takes a linkedlist of items and sorts it by title. 
- * We are making this static so people can use it regardless on any kind of linkedList
- * This is also modular as to keep us from getting confused.
- * No matter what
- * 
+ * This is a simple function that loops through and returns the index of wherever the String called selection is located. 
+ * Don't question it, it is to be used for helping the drop down menu.
+ * We need a way to persist the value chosen by the user so it looks nice. 
+ * @param array
+ * @return
  */
-
-public static LinkedList sortByTitle(LinkedList a, boolean ascending)
+public static int loopThroughReturnIndex(String[] array, String selection)
+{
+	for(int i = 0; i<array.length; i++)
+	{
+		if(array[i].equals(selection))
+			return i;
+		
+		
+	}
+	return -1;
+}
+public static Item[] convertToArray(LinkedList a)
 {
 	Item[] array = new Item[a.size()];
-	Iterator it = a.iterator();
+	//Iterator it = a.iterator();
 	//it.next();
 	for(int i = 0; i< array.length; i++)
 	{
 		array[i] = (Item)a.get(i);	
 	}
+	
+	return array;
+}
+
+public static LinkedList convertToLinkedList(Item[] array)
+{
+	
+	LinkedList listToReturn = new LinkedList();
+
+	for(int i = 0; i < array.length; i++)
+	{
+		//System.out.println(((Book)array[i]).getTitle());	
+		listToReturn.add(array[i]);
+	}
+	return listToReturn;
+}
+
+
+/**
+ * This function takes in two arguments and it compares the two for purposes of the sorting.
+ * This is a little bit tricky since it has been refactored down. This function is used in the sorting function to compare stuff for ordering. 
+ * But, just think of this function as a wrapper around the compareTo function. 
+ * This function handles 2 items, and compares the attributes of those 2 items (depending on what kind - Book, Clothing, Toy, etc. )
+ * First - checks to see what kind of objects we are dealing with by using instanceof
+ * Second - we check to see what kind of object the attribute is. A String or an Integer are the most common
+ * Third - if it's a string, we use compareTo of the attribute we grabbed (via the user choice) for the specific objects to compare against
+ * 			if it's an int, it just returns a negative value (-1) if the first val is less than the second val so that the sort method knows to keep looping through objects. 
+ * 
+ * @return
+ */
+public static int customComparator(Item a, Item b, String attributeToSortBy)
+{	
+	int comparatorValue = -1;
+	if(a instanceof Clothing && b instanceof Clothing)
+	{
+		if(((Clothing)a).attributeMap.get(attributeToSortBy) instanceof String)
+		{
+			comparatorValue = ((String)((Clothing)a).attributeMap.get(attributeToSortBy)).compareTo((String)((Clothing)b).attributeMap.get(attributeToSortBy));
+		}
+		else if(((Clothing)a).attributeMap.get(attributeToSortBy) instanceof Integer)
+		{	
+			//System.out.println("is a less than b? : " + ((Clothing)a).attributeMap.get(Integer.parseInt(attributeToSortBy)) + "  " + ((Clothing)b).attributeMap.get(Integer.parseInt(attributeToSortBy)));
+			if((Integer)((Clothing)a).attributeMap.get(attributeToSortBy) <= (Integer)((Clothing)b).attributeMap.get(attributeToSortBy))
+			{
+				System.out.println((Integer)((Clothing)a).attributeMap.get(attributeToSortBy) + "is less than " + (Integer)((Clothing)b).attributeMap.get(attributeToSortBy));
+				comparatorValue = -1;
+			}
+			else
+			{
+				comparatorValue = 1;
+			}
+		}
+	
+	}
+	else if (a instanceof Toy && b instanceof Toy)
+	{
+		if(((Toy)a).attributeMap.get(attributeToSortBy) instanceof String)
+		{
+			comparatorValue = ((String)((Toy)a).attributeMap.get(attributeToSortBy)).compareTo((String)((Toy)b).attributeMap.get(attributeToSortBy));
+		}
+		else if(((Toy)a).attributeMap.get(attributeToSortBy) instanceof Integer)
+		{	
+			//System.out.println("is a less than b? : " + ((Toy)a).attributeMap.get(Integer.parseInt(attributeToSortBy)) + "  " + ((Toy)b).attributeMap.get(Integer.parseInt(attributeToSortBy)));
+			if((Integer)((Toy)a).attributeMap.get(attributeToSortBy) <= (Integer)((Toy)b).attributeMap.get(attributeToSortBy))
+			{
+				System.out.println((Integer)((Toy)a).attributeMap.get(attributeToSortBy) + "is less than " + (Integer)((Toy)b).attributeMap.get(attributeToSortBy));
+				comparatorValue = -1;
+			}
+			else
+			{
+				comparatorValue = 1;
+			}
+		}		
+	}
+	else if (a instanceof Book && b instanceof Book)
+	{	
+		if(((Book)a).attributeMap.get(attributeToSortBy) instanceof String)
+		{
+			comparatorValue = ((String)((Book)a).attributeMap.get(attributeToSortBy)).compareTo((String)((Book)b).attributeMap.get(attributeToSortBy));
+		}
+		else if(((Book)a).attributeMap.get(attributeToSortBy) instanceof Integer)
+		{	
+			//System.out.println("is a less than b? : " + ((Book)a).attributeMap.get(Integer.parseInt(attributeToSortBy)) + "  " + ((Book)b).attributeMap.get(Integer.parseInt(attributeToSortBy)));
+			if((Integer)((Book)a).attributeMap.get(attributeToSortBy) <= (Integer)((Book)b).attributeMap.get(attributeToSortBy))
+			{
+				System.out.println((Integer)((Book)a).attributeMap.get(attributeToSortBy) + "is less than " + (Integer)((Book)b).attributeMap.get(attributeToSortBy));
+				comparatorValue = -1;
+			}
+			else
+			{
+				comparatorValue = 1;
+			}
+		}
+	}
+	
+	
+	return comparatorValue;	
+}
+
+/**
+ * This function takes a LinkedList -> preferably of books, clothes, etc. It will return the linkedlist in order of whatever attribute you provide 
+ *
+ * @param LinkedList a
+ * @param boolean ascending
+ * @param String attributeToSortBy
+ * @return
+ */
+public static LinkedList sort(LinkedList a, boolean ascending, String attributeToSortBy)
+{
+	Item[] array = convertToArray(a);
 	
 	for(int i=0; i<a.size(); i++)
 	{
@@ -303,7 +459,7 @@ public static LinkedList sortByTitle(LinkedList a, boolean ascending)
 		if(ascending == true)
 		{
 			
-			while( k > 0 && array[k].getTitle().compareTo(array[k-1].getTitle()) <= 0)			
+			while( k > 0 && customComparator(array[k], array[k-1], attributeToSortBy) <= 0)			
 			{
 				System.out.println(k);
 				Item temp = array[k];
@@ -314,8 +470,8 @@ public static LinkedList sortByTitle(LinkedList a, boolean ascending)
 		}
 		else // if we want descending
 		{
-			
-			while( k > 0 && array[k-1].getTitle().compareTo(array[k].getTitle()) <= 0)			
+			//array[k-1].getTitle().compareTo(array[k].getTitle())
+			while( k > 0 && customComparator(array[k-1], array[k], attributeToSortBy) <= 0)			
 			{
 				//System.out.println(k);
 				Item temp = array[k];
@@ -326,158 +482,17 @@ public static LinkedList sortByTitle(LinkedList a, boolean ascending)
 		}
 	}
 	
-	LinkedList listToReturn = new LinkedList();
-	for(int i = 0; i < array.length; i++)
-	{
-		//System.out.println(((Book)array[i]).getTitle());	
-		listToReturn.add(array[i]);
-	}
 	
+	LinkedList listToReturn = convertToLinkedList(array);
 	return listToReturn;
 }
 
 
-public static LinkedList sortByQuantity(LinkedList a, boolean ascending)
-{
-	Item[] array = new Item[a.size()];
-	Iterator it = a.iterator();
-	//it.next();
-	for(int i = 0; i< array.length; i++)
-	{
-		array[i] = (Item)a.get(i);	
-	}
-	
-	for(int i=0; i<a.size(); i++)
-	{
-		int k = i;
-		if(ascending == true)
-		{
-			
-			while( k > 0 && array[k].getQuantity() <= array[k-1].getQuantity())			
-			{
-				System.out.println(k);
-				Item temp = array[k];
-				array[k] = array[k-1];
-				array[k-1] = temp;
-				k--;
-			}
-		}
-		else // if we want descending
-		{
-			
-			while( k > 0 && array[k-1].getQuantity() <= array[k].getQuantity())			
-			{
-				System.out.println(k);
-				Item temp = array[k];
-				array[k] = array[k-1];
-				array[k-1] = temp;
-				k--;
-			}	
-		}
-	}
-	
-	LinkedList listToReturn = new LinkedList();
-	for(int i = 0; i < array.length; i++)
-	{
-		//System.out.println(((Book)array[i]).getTitle());	
-		listToReturn.add(array[i]);
-	}
-	
-	return listToReturn;
-}
-public static LinkedList sortByGenre(LinkedList a, boolean ascending)
-{
-	Item[] array = new Item[a.size()];
-	Iterator it = a.iterator();
-	//it.next();
-	for(int i = 0; i< array.length; i++)
-	{
-		array[i] = (Item)a.get(i);	
-	}	
-	for(int i=0; i<a.size(); i++)
-	{
-		int k = i;
-		if(ascending == true)
-		{			
-			while( k > 0 && ((Book)array[k]).getGenre().compareTo(((Book)array[k-1]).getGenre())	<= 0 )		
-			{
-				System.out.println(k);
-				Item temp = array[k];
-				array[k] = array[k-1];
-				array[k-1] = temp;
-				k--;
-			}
-		}
-		else // if we want descending
-		{		
-			while( k > 0 && ((Book)array[k-1]).getGenre().compareTo(((Book)array[k]).getGenre())	<= 0 )			
-			{
-				System.out.println(k);
-				Item temp = array[k];
-				array[k] = array[k-1];
-				array[k-1] = temp;
-				k--;
-			}	
-		}
-	}
-	
-	LinkedList listToReturn = new LinkedList();
-	for(int i = 0; i < array.length; i++)
-	{
-		//System.out.println(((Book)array[i]).getTitle());	
-		listToReturn.add(array[i]);
-	}
-	
-	return listToReturn;
-}
-public static LinkedList sortByAuthor(LinkedList a, boolean ascending)
-{
-	Item[] array = new Item[a.size()];
-	Iterator it = a.iterator();
-	//it.next();
-	for(int i = 0; i< array.length; i++)
-	{
-		array[i] = (Item)a.get(i);	
-	}
-	
-	for(int i=0; i<a.size(); i++)
-	{
-		int k = i;
-		if(ascending == true)
-		{
-			
-			while( k > 0 && ((Book)array[k]).getAuthor().compareTo(((Book)array[k-1]).getAuthor())<= 0 )		
-			{
-				System.out.println(k);
-				Item temp = array[k];
-				array[k] = array[k-1];
-				array[k-1] = temp;
-				k--;
-			}
-		}
-		else // if we want descending
-		{
-			
-			while( k > 0 && ((Book)array[k-1]).getAuthor().compareTo(((Book)array[k]).getAuthor()) <= 0 )			
-			{
-				System.out.println(k);
-				Item temp = array[k];
-				array[k] = array[k-1];
-				array[k-1] = temp;
-				k--;
-			}	
-		}
-	}
-	
-	LinkedList listToReturn = new LinkedList();
-	for(int i = 0; i < array.length; i++)
-	{
-		//System.out.println(((Book)array[i]).getTitle());	
-		listToReturn.add(array[i]);
-	}
-	
-	return listToReturn;
-}
+
+
+
+
+
 /**
  * There exist the options - Exit and Main Menu. 
  * @param result
@@ -489,79 +504,29 @@ public static LinkedList sortByAuthor(LinkedList a, boolean ascending)
  */
 public void resultHandler(int result, String whatItemType, String sortCriteria)
 {
-	if (result == 3) // someone hits the sort ascending button
+	if (result == 3 || result == 2) // someone hits the sort ascending button (3) or descending (2)
 	{
-		System.out.println("Sort Ascending");
+		boolean ascending = false;
+		if(result == 3)
+			ascending = true;
+		else if(result == 2)
+			ascending = false;
+			
 		if(whatItemType.equals("Book"))
 		{
-			if( sortCriteria.equals("Title") || sortCriteria.equals("title"))
-				{
-					books = sortByTitle(books, true);
-					
-				}
-			else if( sortCriteria.equals("Quantity") || sortCriteria.equals("quantity"))
-				{
-					books = sortByQuantity(books, true);
-					
-				}
-			else if( sortCriteria.equals("genre") || sortCriteria.equals("Genre"))
-				{
-					
-					books = sortByGenre(books, true);
-				}
-			else if( sortCriteria.equals("Author") || sortCriteria.equals("Author"))
-			{
-				
-				books = sortByAuthor(books, true);
-			}
-			
+			books = sort(books, ascending, sortCriteria);	
 			viewItems("Book");
-		}
-			
+		}			
 		else if (whatItemType.equals("Clothing"))
 		{
-			clothes = sortByTitle(clothes, true);
+			clothes = sort(clothes, ascending, sortCriteria);
 			viewItems("Clothing");
-		}
-			
+		}			
 		else if (whatItemType.equals("Toy"))
 		{
-			toys = sortByTitle(toys, true);
-			viewItems("Toy");
-			
-		}	
-	}
-	else if (result == 2) // Someone hits the sort descending button
-	{
-		System.out.println("Sort Descending");
-		
-		if(whatItemType.equals("Book"))
-		{	
-			if( sortCriteria.equals("Title") || sortCriteria.equals("title"))
-				books = sortByTitle(books, false);
-			else if( sortCriteria.equals("Quantity") || sortCriteria.equals("quantity"))
-				books = sortByQuantity(books, false);
-			else if( sortCriteria.equals("genre") || sortCriteria.equals("Genre"))
-				books = sortByGenre(books, false);
-			else if( sortCriteria.equals("Author") || sortCriteria.equals("Author"))
-				books = sortByAuthor(books, false);
-	
-			viewItems("Book");
+			toys = sort(toys, ascending, sortCriteria);
+			viewItems("Toy");		
 		}
-			
-		else if (whatItemType.equals("Clothing"))
-		{
-			clothes = sortByTitle(clothes, false);
-			viewItems("Clothing");
-		}
-			
-		else if (whatItemType.equals("Toy"))
-		{
-			toys = sortByTitle(toys, false);
-			viewItems("Toy");
-			
-		}
-	
 	}
 	else if (result == 1)
 	{
