@@ -257,6 +257,7 @@ public void viewItems(String type)
 		bookList.setBounds(50, 100,90,20);  
 		//JFrame frame = new JFrame();
 		bookList.setVisible(true);
+		
 		panel.setVisible(true);
 		
 		
