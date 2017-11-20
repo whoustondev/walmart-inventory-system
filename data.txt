@@ -10,4 +10,11 @@ Toy; Gameboy Advance; 10; 8
 Toy; Nintendo Wii; 150; 4 
 Toy; Lego Batman; 50; 8 
 Toy; Barbie Funhouse; 20; 5
-
+Clothing; Shorts; Polo; Grey; 12; 33; 33; 22
+Clothing; skirt; women's comfort; pink; 12; 22; 2; 222
+Clothing; T-shirt; hanes; white; 288; 288; 22; 22
+Clothing; bathing suit; Reef; black/red; 33; 322; 12; 6666
+Toy; Hotwheels; 12; 2
+Clothing; Hoodie; On the byas; Burgundy; 0; 0; 0; 12
+Book; Hortsman; 12; Programming
+Toy; Beginner's RockOn Guitar; 22; 10
