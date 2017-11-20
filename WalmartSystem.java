@@ -14,7 +14,7 @@ import java.util.*;
  *		we want modularity in this program - so we should be able  to pass a LinkedList and sort 
  *	5. Order new Items.
  *	6. Add a new Product.
- *	7. Search (filter
+ *	7. Search (filter)
  *	8. Make it so that you can 
  *	9. fix buttons so that the quit button is on the left and that one of the buttons is highlighted
  *	10. Make it so that the title drop down isn't always on the default (Title but whatever the last choice was)
@@ -22,21 +22,21 @@ import java.util.*;
 public class WalmartSystem
 {
 	
-	Object[] options1 = { "Exit", "Main Menu"};
-	Object[] optionsWithSort = { "Exit", "Main Menu", "Sort Descending", "Sort Ascending",};
+	private Object[] options1 = { "Exit", "Main Menu"};
+	private Object[] optionsWithSort = { "Exit", "Main Menu", "Sort Descending", "Sort Ascending",};
 	
-	public LinkedList<Book> books = new LinkedList<Book>();
-	public LinkedList<Clothing> clothes = new LinkedList<Clothing>();
-	public LinkedList<Toy> toys = new LinkedList<Toy>();
+	private LinkedList<Book> books = new LinkedList<Book>();
+	private LinkedList<Clothing> clothes = new LinkedList<Clothing>();
+	private LinkedList<Toy> toys = new LinkedList<Toy>();
 	//public LinkedList<User> users = new LinkedList<User>();
 	/**
 	 * I hate every but of this
 	 * but for now, these three ints help me keep track of the last index that was chosen in the sorting drop down. 
 	 * Otherwise, the default will always be Title even after you select and then sort something else
 	 */
-	String lastClothingSortingSelection = "";
-	String lastToySortingSelection = "";
-	String lastBookSortingSelection = "";
+	private String lastClothingSortingSelection = "";
+	private String lastToySortingSelection = "";
+	private String lastBookSortingSelection = "";
 	
 	
 	public void run()
@@ -60,6 +60,225 @@ public class WalmartSystem
 
     	System.exit(0);	
 	}
+	/**
+	 * This function will have one job - which is to add a designated item to the database.
+	 * How this is going to work is..
+	 * 1. find where objects like the one passed to this function are stored
+	 * Books as listed first (all in a row) then followed by Clothes (all in a row) then followed by toys (all in a row)
+	 * And so, it do
+	 * @param filepath
+	 */
+	public void addItemToDatabase(String filepath, Item toAdd)
+	{
+	 	try 
+	 	{	    				
+	 		System.out.print("awd");
+	 		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(filepath), true));
+	 		if(toAdd instanceof Clothing)
+	 		{
+	 			Clothing a = (Clothing)toAdd;
+	 			bw.append(a.toString());
+	 		}
+	 		else if (toAdd instanceof Toy)
+	 		{
+	 			Toy c = (Toy)toAdd;
+	 			bw.append(c.toString());
+	 		}
+	 		else if (toAdd instanceof Book)
+	 		{
+	 			Book c = (Book)toAdd;
+	 			bw.append(c.toString());
+	 		}
+	 		bw.close();
+	 	}
+	 	catch(Exception a)
+	 	{		
+	 		a.printStackTrace();
+	 	}
+	}
+	
+	public void addNewItemOptionsJpanel()
+	{ 
+		//Object[] addItemOptions = {  "Main Menu", "Add Clothing", "Add Toy", "Add Book", "Exit"};
+		Object[] addItemOptions = {  "Exit", "Add Book", "Add Toy", "Add Clothing", "Main Menu"};
+		
+		JPanel panel = new JPanel();
+		int result = JOptionPane.showOptionDialog(null, panel, "Add New Item", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, addItemOptions, null);
+		if (result == 0)
+		{
+			System.out.println("Exit");
+			System.exit(0);
+		
+		}
+		else if (result == 1)
+		{
+			System.out.println("---Add Book");
+			addNewBook();
+					
+		}
+		else if (result == 2)
+		{
+			System.out.println("---Add Toy");
+			addNewToy();
+					
+		}
+		else if (result == 3)
+		{
+			System.out.println("---Add Clothing");
+			addNewClothing();
+					
+		}
+		else if (result == 4)
+		{
+			System.out.println("Main Menu");
+			mainMenu();
+					
+		}
+	}
+	
+	public void addNewClothing()
+	{
+		JPanel panel = new JPanel();
+
+		Object[] options = {"Exit", "Main Menu", "Add Item"};
+		try 
+		{
+			JTextField title = new JTextField(10);
+			panel.add(new Label("Title: "));
+			panel.add(title);
+			JTextField color = new JTextField(10);
+			panel.add(new Label("Color: "));
+			panel.add(color);
+			
+			JTextField brand = new JTextField(10);
+			panel.add(new Label("Brand: "));
+			panel.add(brand);
+			
+			
+			JTextField qtySmall = new JTextField(10);
+			panel.add(new Label("Qty Small:"));
+			panel.add(qtySmall);
+			
+			JTextField qtyMedium = new JTextField(10);
+			panel.add(new Label("Qty Medium:"));
+			panel.add(brand);
+			
+			
+			
+			JTextField qtyLarge = new JTextField(10);
+			panel.add(new Label("Qty Large:"));
+			panel.add(qtyLarge);
+			
+			
+			JTextField qtyExtraLarge = new JTextField(10);
+			panel.add(new Label("Quantity XL: "));
+			panel.add(qtyExtraLarge);
+			int result = JOptionPane.showOptionDialog(null, panel, "Add New Item", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, null);
+
+			
+		}
+		catch(Exception a)
+		{
+			a.printStackTrace();
+			
+		}
+		
+		
+		
+	}
+	
+	public void addNewToy()
+	{
+		JPanel panel = new JPanel();
+
+
+		try 
+		{
+			JTextField title = new JTextField(10);
+			panel.add(new Label("Title: "));
+			panel.add(title);
+			JTextField color = new JTextField(10);
+			panel.add(new Label("Color: "));
+			panel.add(color);
+			
+			JTextField brand = new JTextField(10);
+			panel.add(new Label("Brand: "));
+			panel.add(brand);
+			
+			
+			JTextField qtySmall = new JTextField(10);
+			panel.add(new Label("Qty Small:"));
+			panel.add(qtySmall);
+			
+			JTextField qtyMedium = new JTextField(10);
+			panel.add(new Label("Qty Medium:"));
+			panel.add(brand);
+			
+			
+			
+			JTextField qtyLarge = new JTextField(10);
+			panel.add(new Label("Qty Large:"));
+			panel.add(qtyLarge);
+			
+			
+			JTextField qtyExtraLarge = new JTextField(10);
+			panel.add(new Label("Quantity XL: "));
+			panel.add(qtyExtraLarge);
+		}
+		catch(Exception a)
+		{
+			a.printStackTrace();
+			
+		}
+		
+		
+	}
+	public void addNewBook()
+	{
+		JPanel panel = new JPanel();
+
+
+		try 
+		{
+			JTextField title = new JTextField(10);
+			panel.add(new Label("Title: "));
+			panel.add(title);
+			JTextField color = new JTextField(10);
+			panel.add(new Label("Color: "));
+			panel.add(color);
+			
+			JTextField brand = new JTextField(10);
+			panel.add(new Label("Brand: "));
+			panel.add(brand);
+			
+			
+			JTextField qtySmall = new JTextField(10);
+			panel.add(new Label("Qty Small:"));
+			panel.add(qtySmall);
+			
+			JTextField qtyMedium = new JTextField(10);
+			panel.add(new Label("Qty Medium:"));
+			panel.add(brand);
+			
+			
+			
+			JTextField qtyLarge = new JTextField(10);
+			panel.add(new Label("Qty Large:"));
+			panel.add(qtyLarge);
+			
+			
+			JTextField qtyExtraLarge = new JTextField(10);
+			panel.add(new Label("Quantity XL: "));
+			panel.add(qtyExtraLarge);
+		}
+		catch(Exception a)
+		{
+			a.printStackTrace();
+			
+		}
+		
+	}
+	
 	/**
 	 * This is a function that goes through the database
 	 * Then, it adds all the items to their respective LinkedLists which are declared above.
@@ -122,30 +341,29 @@ public class WalmartSystem
 	    	return;
 	}
 
-
+	/**
+	 * The main menu function. 
+	 */
 	public void mainMenu()
 	
 	{
 		// This function provides a JPanel for the main options to choose from 
 		
-	    Object[] options1 = { "Exit", "Order Items", "Add Users", "Special Sort", "Add Items", "View Items"};
+	    Object[] options1 = { "Exit", "Order Items", "Add Users", "Add Items", "View Items"};
     		JPanel panel = new JPanel();
     		//panel.setBackground(Color.lightGray);
     		
     		int result = JOptionPane.showOptionDialog(null, panel, "Main Menu", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, null);
     		System.out.println(result);
-    		if (result == 5)
+    		if (result == 4)
     		{
     			System.out.println("View Items");
     			viewItemOptionsJPanel();
     		}
-    		else if (result == 4)
-    		{
-    			System.out.println("Add Items");
-    		}
     		else if (result == 3)
     		{
-    			System.out.println("SpecialSort");
+    			System.out.println("Add Items");
+    			addNewItemOptionsJpanel();
     		}
     		else if (result == 2)
     		{
@@ -228,6 +446,8 @@ public void viewItems(String type)
 	 	bookList= new JComboBox(cols);
 	 	System.out.println("our last selection was...." + lastClothingSortingSelection );
 	 	bookList.setSelectedItem(lastClothingSortingSelection);
+		System.out.println("printing out the selected item after calling setSelectedItem" + bookList.getSelectedItem());
+		
 	}
 	else if(type.equals("Toy"))
 	{	
@@ -238,6 +458,8 @@ public void viewItems(String type)
 		 bookList = new JComboBox(cols);
 		 System.out.println("our last selection was...." + lastToySortingSelection );
 		 bookList.setSelectedItem(lastToySortingSelection);
+			System.out.println("printing out the selected item after calling setSelectedItem" + bookList.getSelectedItem());
+			
 	}
 	else if(type.equals("Book"))
 	{
@@ -248,6 +470,8 @@ public void viewItems(String type)
 		bookList = new JComboBox(cols);
 		System.out.println("our last selection was...." + lastBookSortingSelection );
 		bookList.setSelectedItem(lastBookSortingSelection);
+		System.out.println("printing out the selected item after calling setSelectedItem" + bookList.getSelectedItem());
+	
 	}
 
 	int count = 0;
@@ -288,7 +512,7 @@ public void viewItems(String type)
 		//JFrame frame = new JFrame();
 		bookList.setVisible(true);
 		
-		panel.setVisible(true);		
+		panel.setVisible(true);		 
 		int result = JOptionPane.showOptionDialog(null, panel, "Looking at"+type+"s", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, optionsWithSort, null);	
 		String selection = (String) bookList.getSelectedItem();
 		System.out.println("going to sort the..." + selection);
@@ -310,7 +534,7 @@ public void viewItems(String type)
 			System.out.println(lastBookSortingSelection);
 		}
 		
-	
+		System.out.println("Selection: " + selection );
 		resultHandler(result, type, selection);
 	}
 	return;	

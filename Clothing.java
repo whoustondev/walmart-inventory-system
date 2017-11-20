@@ -18,6 +18,7 @@ public class Clothing extends Item
 
 		this.setTitle(title);
 		this.setType("Clothing");
+		this.brand = brand;
 		this.color = color;
 		this.qtySmall = qtySmall;
 		this.qtyMedium = qtyMedium;
@@ -126,4 +127,8 @@ public class Clothing extends Item
 		return null;
 	}
 	
+	public String toString()
+	{
+		return this.getType()+"; " +this.getTitle()+"; "+this.getBrand()+"; "+this.getColor()+"; "+this.getQtySmall()+"; "+this.getQtyMedium()+"; "+this.getQtyLarge()+"; "+this.getQtyExtraLarge()+"\n";	
+	}
 }

@@ -53,4 +53,10 @@ public class Book extends Item
 		return null;
 	}
 	
+	public String toString()
+	{
+		return this.getType()+"; " +this.getAuthor()+"; "+this.getQuantity()+"; "+this.getGenre()+"\n";
+		
+	}
+	
 }
