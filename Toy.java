@@ -33,9 +33,12 @@ public class Toy extends Item
 			return getQuantity();
 		else if(index == 2)
 			return getRecAge();
-	
-		
 		return null;
+	}
+	
+	public String toString()
+	{
+		return this.getType()+"; " +this.getTitle()+"; "+this.getQuantity()+"; "+this.getRecAge()+"\n";	
 	}
 
 }

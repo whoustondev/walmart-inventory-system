@@ -7,8 +7,15 @@ public class Driver {
 	public static void main (String[] args)
 	{
 		WalmartSystem system = new WalmartSystem();
-//
 		system.run();
+//		Book a = new Book("A good time", "will Houston","Comedy", 34);
+//		Toy b = new Toy("Fisher price", 23,2);
+//		Clothing c = new Clothing("Tshirt", "Polo","CBlue", 34, 34,32,12);
+//		system.addItemToDatabase("./IT-306WalmartInventorySystem/data.txt", a );
+//		system.addItemToDatabase("./IT-306WalmartInventorySystem/data.txt", b );
+//		system.addItemToDatabase("./IT-306WalmartInventorySystem/data.txt", c );
+////
+//		system.run();
 //		Book a = new Book("Z Brave New World", "Alduous Huxley","Scary", 35);
 //		
 //		Book b = new Book("GGGGG", "George Orwell","Scary", 22);
@@ -29,6 +36,9 @@ public class Driver {
 //		{	if(ha.get(i) instanceof Book)
 //				System.out.println(((Book)ha.get(i)).getQuantity());		
 //		}
+		
+		
+		
 		
 	}
 }
