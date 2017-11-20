@@ -10,14 +10,10 @@ import java.util.*;
  *  1. Make the buttons for sorting right underneath the drop down (ascend and descend)
  *	2. Finish the username and password database check prob. a map.
  *	3. See if there is a way to hide values in the JTextField that holds a password
- *	4. Make sure you can use the sorting algo by itself by passing null values to stuff you don't use
- *		we want modularity in this program - so we should be able  to pass a LinkedList and sort 
  *	5. Order new Items.
- *	6. Add a new Product.
  *	7. Search (filter)
- *	8. Make it so that you can 
  *	9. fix buttons so that the quit button is on the left and that one of the buttons is highlighted
- *	10. Make it so that the title drop down isn't always on the default (Title but whatever the last choice was)
+
  */
 public class WalmartSystem
 {
@@ -714,7 +710,7 @@ public static int customComparator(Item a, Item b, String attributeToSortBy)
 	{
 		if(((Clothing)a).attributeMap.get(attributeToSortBy) instanceof String)
 		{
-			comparatorValue = ((String)((Clothing)a).attributeMap.get(attributeToSortBy)).compareTo((String)((Clothing)b).attributeMap.get(attributeToSortBy));
+			comparatorValue = ((String)((Clothing)a).attributeMap.get(attributeToSortBy)).toUpperCase().compareTo(((String)((Clothing)b).attributeMap.get(attributeToSortBy)).toUpperCase());
 		}
 		else if(((Clothing)a).attributeMap.get(attributeToSortBy) instanceof Integer)
 		{	
@@ -735,7 +731,7 @@ public static int customComparator(Item a, Item b, String attributeToSortBy)
 	{
 		if(((Toy)a).attributeMap.get(attributeToSortBy) instanceof String)
 		{
-			comparatorValue = ((String)((Toy)a).attributeMap.get(attributeToSortBy)).compareTo((String)((Toy)b).attributeMap.get(attributeToSortBy));
+			comparatorValue = ((String)((Toy)a).attributeMap.get(attributeToSortBy)).toUpperCase().compareTo(((String)((Toy)b).attributeMap.get(attributeToSortBy)).toUpperCase());
 		}
 		else if(((Toy)a).attributeMap.get(attributeToSortBy) instanceof Integer)
 		{	
@@ -755,7 +751,7 @@ public static int customComparator(Item a, Item b, String attributeToSortBy)
 	{	
 		if(((Book)a).attributeMap.get(attributeToSortBy) instanceof String)
 		{
-			comparatorValue = ((String)((Book)a).attributeMap.get(attributeToSortBy)).compareTo((String)((Book)b).attributeMap.get(attributeToSortBy));
+			comparatorValue = ((String)((Book)a).attributeMap.get(attributeToSortBy)).toUpperCase().compareTo(((String)((Book)b).attributeMap.get(attributeToSortBy)).toUpperCase());
 		}
 		else if(((Book)a).attributeMap.get(attributeToSortBy) instanceof Integer)
 		{	
