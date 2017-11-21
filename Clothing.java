@@ -118,8 +118,6 @@ public class Clothing extends Item
 		else if(index == 4)
 			return getQtyMedium();
 		else if(index == 5)
-			return getQtyMedium();
-		else if(index == 6)
 			return getQtyLarge();
 		else if(index == 6)
 			return getQtyExtraLarge();
