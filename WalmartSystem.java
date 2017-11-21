@@ -619,13 +619,13 @@ public void viewItems(String type)
 		else if(type.equals("Toy"))
 		{
 			System.out.println("made it where i needed to");
-			lastBookSortingSelection = selection;
+			lastToySortingSelection = selection;
 			System.out.println("This should be an output---->"+lastToySortingSelection);
 		}
 		else if(type.equals("Book"))
 		{
 			System.out.println("made it where i needed to");
-			lastToySortingSelection = selection;
+			lastBookSortingSelection = selection;
 			System.out.println("This should be an output----->"+lastBookSortingSelection);
 		}
 		
