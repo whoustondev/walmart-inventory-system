@@ -18,3 +18,7 @@ Toy; Hotwheels; 12; 2
 Clothing; Hoodie; On the byas; Burgundy; 0; 0; 0; 12
 Book; Hortsman; 12; Programming
 Toy; Beginner's RockOn Guitar; 22; 10
+Book; JK Rowling; 2; Fantasy
+Book; JK Rowlong; 12; Fantasy
+Book; J.K. Rolls alot; 1000; Fantasy
+Book; Harry Potter 2; J.K. Rolls alot ; 122; Psychadelic

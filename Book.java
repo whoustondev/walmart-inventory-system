@@ -1,5 +1,5 @@
 import java.util.*;
-public class Book extends Item
+public class Book extends Item 
 {
 
 	private String author;
@@ -55,7 +55,7 @@ public class Book extends Item
 	
 	public String toString()
 	{
-		return this.getType()+"; " +this.getAuthor()+"; "+this.getQuantity()+"; "+this.getGenre()+"\n";
+		return this.getType()+"; " + this.getTitle()+"; " +this.getAuthor()+"; "+this.getQuantity()+"; "+this.getGenre()+"\n";
 		
 	}
 	
