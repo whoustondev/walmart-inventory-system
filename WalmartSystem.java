@@ -34,7 +34,7 @@ public class WalmartSystem
 	JComboBox clothingDropdown = new JComboBox(Clothing.childClassAttributes);
 	JComboBox bookDropdown = new JComboBox(Book.childClassAttributes);
 	JComboBox toyDropdown = new JComboBox(Toy.childClassAttributes);
-	
+	JTextField filterField = new JTextField(10);
 	private String filepath = "./IT-306WalmartInventorySystem/data.txt";
 	
 	public void run()
@@ -45,6 +45,7 @@ public class WalmartSystem
 	    	panel.setBackground(Color.lightGray);
 	    	JTextField username = new JTextField(10);
 	    	JTextField password = new JTextField(10);
+	    	
 	    	 // a spacer
 	    	panel.add(new Label("Username:"));
 	    	panel.add(username);
@@ -432,7 +433,7 @@ public class WalmartSystem
 public void viewItemOptionsJPanel()
 {
 	// This function provides a JPanel for the main options to choose from 
-
+	filterField.setText("");// So Filter is empty
 	Object[] options1 = { "Exit", "Main Menu", "View Books", "View Toys", "View Clothes"};
 
 	JPanel panel = new JPanel();
@@ -470,6 +471,28 @@ public void viewItemOptionsJPanel()
 	return;	
 }
 
+
+public static LinkedList filter(String criteria, LinkedList a, String attribute)
+{
+	LinkedList<Item> newList = new LinkedList<Item>();
+	
+	
+	for(Object string: a)
+	{
+		System.out.println("inside for");
+		if(((Item)string).getTitle().startsWith(criteria))
+		{	
+			newList.add((Item)string);
+		}
+		
+		
+	}
+	return newList;
+	
+}
+
+
+
 /**
  * Tell this function what type of item you want to view. 
  * pass in "Book" "Toy" or "Clothing". You know?
@@ -477,7 +500,7 @@ public void viewItemOptionsJPanel()
  */
 public void viewItems(String type)
 {
-	Object[] optionsWithSort = { "Exit", "Main Menu", "Sort Descending", "Sort Ascending"};
+	Object[] optionsWithSort = { "Exit", "Main Menu", "Sort Descending", "Sort Ascending", "Filter"};
 	Iterator it = null; 
 	Clothing clothing = null;
 	Toy toy = null;
@@ -485,45 +508,71 @@ public void viewItems(String type)
 	Item item;
 	Object[][] rows = null;
 	Object[] cols = null;
+	LinkedList copy;
+	
+	String filterFieldString = filterField.getText();
+	LinkedList filteredList;
+	
+	
 	
 	int numberOfColumns = 3;
 	if(type.equals("Clothing"))
 	{	
 		numberOfColumns = Clothing.childClassAttributes.length;
-		rows = new Object[clothes.size()][numberOfColumns];
-	 	it = clothes.iterator();
-	 	cols = Clothing.childClassAttributes;
 
 	 	//clothingDropdown = new JComboBox(cols);
 	 	System.out.println("our last selection was...." + lastClothingSortingSelection );
 	 	clothingDropdown.setSelectedItem(lastClothingSortingSelection);
 		System.out.println("printing out the selected item after calling setSelectedItem" + clothingDropdown.getSelectedItem());
-		
+		if(filterFieldString == null || filterFieldString == "")
+			filteredList = clothes;
+		else
+			filteredList = filter(filterFieldString, clothes, clothingDropdown.getSelectedItem().toString());
+			
+		it = filteredList.iterator();
+		rows = new Object[filteredList.size()][numberOfColumns];
+	 	//it = clothes.iterator();
+	 	cols = Clothing.childClassAttributes;
+
 	}
 	else if(type.equals("Toy"))
 	{	
 		 numberOfColumns = Toy.childClassAttributes.length;
-		 rows = new Object[toys.size()][numberOfColumns];
-		 it = toys.iterator();
-		 cols = Toy.childClassAttributes;
-		 //toyDropdown = new JComboBox(cols);
+
 		 System.out.println("our last selection was...." + lastToySortingSelection );
 		 toyDropdown.setSelectedItem(lastToySortingSelection);
 		System.out.println("printing out the selected item after calling setSelectedItem" + toyDropdown.getSelectedItem());
-			
+		
+		
+		if(filterFieldString == null || filterFieldString == "")
+			filteredList = toys;
+		else
+			filteredList = filter(filterFieldString, toys, toyDropdown.getSelectedItem().toString());
+		
+		it = filteredList.iterator();
+		 rows = new Object[filteredList.size()][numberOfColumns];
+		 //it = toys.iterator();
+		 cols = Toy.childClassAttributes;
 	}
 	else if(type.equals("Book"))
 	{
 		System.out.println("made it here---------------in Book");
 		numberOfColumns = Book.childClassAttributes.length;	
-		rows = new Object[books.size()][numberOfColumns];
-		it = books.iterator();
-		cols = Book.childClassAttributes;
+
 		System.out.println();
 		//bookDropdown = new JComboBox(cols);
 		System.out.println("our last selection was...." + lastBookSortingSelection );
 		bookDropdown.setSelectedItem(lastBookSortingSelection);
 		System.out.println("printing out the selected item after calling setSelectedItem" + bookDropdown.getSelectedItem());
+		if(filterFieldString == null || filterFieldString == "")
+			filteredList = books;
+		else
+			filteredList = filter(filterFieldString, books, bookDropdown.getSelectedItem().toString());
+			
+		it = filteredList.iterator();
+		rows = new Object[filteredList.size()][numberOfColumns];
+		
+		cols = Book.childClassAttributes;
 	
 	}
 	/**
@@ -590,8 +639,10 @@ public void viewItems(String type)
 			bookDropdown.setBounds(50,100,90,20); 
 			bookDropdown.setVisible(true);
 		}
+		Label filterLabel = new Label("\nFilter On Title:");
 	
-
+		panel.add(filterLabel);
+		panel.add(filterField);
 		panel.setVisible(true);		 
 		int result = JOptionPane.showOptionDialog(null, panel, "Looking at"+type+"s", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, optionsWithSort, null);	
 		String selection = "";
@@ -862,7 +913,15 @@ public void genericResultHandler(int result)
  */
 public void sortingResultHandler(int result, String whatItemType, String sortCriteria)
 {
-	if (result == 3 || result == 2) // someone hits the sort ascending button (3) or descending (2)
+	
+	
+	
+	if (result == 4) // We filter
+	{
+		
+		viewItems(whatItemType);
+	}
+	else if (result == 3 || result == 2) // someone hits the sort ascending button (3) or descending (2)
 	{
 		boolean ascending = false;
 		if(result == 3)
