@@ -421,6 +421,7 @@ public class WalmartSystem
       		else if (result == 1)
     		{
     			System.out.println("Order Items");
+    			orderNewItemsChoicePanel();
     		}
     		else 
     		{
@@ -429,6 +430,53 @@ public class WalmartSystem
     		}			
 		return;
 	}
+
+	
+	
+public void orderNewItemsChoicePanel()
+{
+	Object[] options = { "Exit", "Main Menu", "Order Books", "Order Toys", "Order Clothes"};
+	JPanel panel = new JPanel();
+	//panel.setBackground(Color.lightGray);
+	ItemOrderer orderer;
+	int result = JOptionPane.showOptionDialog(null, panel, "Main Menu", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, null);
+	System.out.println(result);
+	if (result == 4)
+	{
+		System.out.println("Order Clothes");
+		orderer = new ItemOrderer(this, clothes, filepath);
+		orderer.orderItemPanel();
+	}
+	else if (result == 3)
+	{
+		System.out.println("Order Toys");
+		orderer = new ItemOrderer(this, toys, filepath);
+		orderer.orderItemPanel();
+
+	}
+	else if (result == 2)
+	{
+		System.out.println("Order Books");
+		orderer = new ItemOrderer(this, books, filepath);
+		orderer.orderItemPanel();
+
+	}
+	else if (result == 1)
+	{
+		System.out.println("Main Menu");
+		mainMenu();
+
+	}
+	else if (result == 0)
+	{
+		System.exit(0);
+	}
+	return;	
+}
+
+
+
+
 
 public void viewItemOptionsJPanel()
 {
