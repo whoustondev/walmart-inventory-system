@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.Hashtable;
 
 /*
@@ -65,7 +66,7 @@ public class User {
     }
 
     public boolean setFirstName(String firstName) {
-        this.firstName = firstName;
+        //this.firstName = firstName;
         //return true;
 
         for (int i = 0; i < firstName.length(); i++) {
@@ -78,11 +79,12 @@ public class User {
     }
 
     public String getLastName() {
+        
         return lastName;
     }
 
     public boolean setLastName(String lastName) {
-        this.lastName = lastName;
+        //this.lastName = lastName;
         //return true;
 
         for (int i = 0; i < lastName.length(); i++) {
@@ -118,6 +120,7 @@ public class User {
 
     public boolean setType(int type) {
         boolean isValid = false;
+        try{
         if (type == 1) {
             this.type = "Administrator";
             isValid = true;
@@ -125,6 +128,9 @@ public class User {
             this.type = "Employee";
             isValid = true;
         }
+        
+        }catch(NumberFormatException e){isValid = false;}
+        
 
         return isValid;
     }
