@@ -1,3 +1,7 @@
+
+package newpackage;
+
+
 import java.util.Hashtable;
 
 /*
@@ -9,6 +13,7 @@ import java.util.Hashtable;
  *
  * @author Jlartey10
  */
+ //jj
 public class User {
 
     private String username;
