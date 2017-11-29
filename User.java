@@ -56,7 +56,8 @@ public class User {
     }
 
     public void setUserid(int userid) {
-        this.userid = userid;
+        //this.userid = userid;
+        this.userid =total;
     }
 
     public String getFirstName() {
@@ -132,12 +133,13 @@ public class User {
         return total;
     }
 
+    @Override
     public String toString() {
-        return "Username : " + this.username
-                + "\nUserid : " + this.userid
-                + "\nFirst Name : " + this.firstName
-                + "\nLast Name :  " + this.lastName
-                + "\nType : " + this.type;
+        return "Username : " + this.getUsername()
+                + "\nUserid : " + this.getUserid()
+                + "\nFirst Name : " + this.getFirstName()
+                + "\nLast Name :  " + this.getLastName()
+                + "\nType : " + this.getType();
     }
 
 }

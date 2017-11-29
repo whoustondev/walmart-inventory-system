@@ -42,7 +42,7 @@ public class WalmartSystem
         public static String newpassword = "";
         
         
-	public void run()
+	public void run() throws IOException
 	{
 //		Object[] options2 = { "Cancel", "Login",};
 //
@@ -161,7 +161,7 @@ public class WalmartSystem
 			books.add((Book)a);			
 		}		
 	}
-	public void addNewItemOptionsJpanel()
+	public void addNewItemOptionsJpanel() throws IOException
 	{ 
 		//Object[] addItemOptions = {  "Main Menu", "Add Clothing", "Add Toy", "Add Book", "Exit"};
 		Object[] addItemOptions = {  "Exit", "Add Book", "Add Toy", "Add Clothing", "Main Menu"};
@@ -205,7 +205,7 @@ public class WalmartSystem
 		}
 	}
 	
-	public void addNewClothingPanel()
+	public void addNewClothingPanel() throws IOException
 	{
 		JPanel panel = new JPanel();
 
@@ -263,7 +263,7 @@ public class WalmartSystem
 	}
 	
 	
-	public void addNewBookPanel()
+	public void addNewBookPanel() throws IOException
 	{
 		JPanel panel = new JPanel();
 		Object[] options = {"Exit", "Main Menu", "Add Item"};
@@ -315,7 +315,7 @@ public class WalmartSystem
 	 * there could be a way to dynamically make the add functions.
 	 * Perhaps dynamically storing the text field info in a hashmap (or something)
 	 */
-	public void addNewToyPanel()
+	public void addNewToyPanel() throws IOException
 	{
 		JPanel panel = new JPanel();
 
@@ -364,7 +364,7 @@ public class WalmartSystem
 	 * It will give a user the option to go back to the main menu, or exit. 
 	 * 
 	 */
-	public void invalidInputPanel()
+	public void invalidInputPanel() throws IOException
 	{
 		Object[] simpleOptions = { "Exit", "Main Menu"};
 		JPanel panel = new JPanel();
@@ -438,7 +438,7 @@ public class WalmartSystem
 	/**
 	 * The main menu function. 
 	 */
-	public void mainMenu()
+	public void mainMenu() throws IOException
 	
 	{
 		// This function provides a JPanel for the main options to choose from 
@@ -463,7 +463,8 @@ public class WalmartSystem
     		{
     			System.out.println("Add User");
                         //Add user from UserApplication
-                        UserApplication.getInput();
+                        UserApplication.main(null);
+                        //UserApplication.getInput();
                         mainMenu();
     		}
       		else if (result == 1)
@@ -481,7 +482,7 @@ public class WalmartSystem
 
 	
 	
-public void orderNewItemsChoicePanel()
+public void orderNewItemsChoicePanel() throws IOException
 {
 	Object[] options = { "Exit", "Main Menu", "Order Books", "Order Toys", "Order Clothes"};
 	JPanel panel = new JPanel();
@@ -526,7 +527,7 @@ public void orderNewItemsChoicePanel()
 
 
 
-public void viewItemOptionsJPanel()
+public void viewItemOptionsJPanel() throws IOException
 {
 	// This function provides a JPanel for the main options to choose from 
 	filterField.setText("");// So Filter is empty
@@ -594,7 +595,7 @@ public static LinkedList filter(String criteria, LinkedList a, String attribute)
  * pass in "Book" "Toy" or "Clothing". You know?
  * @param type
  */
-public void viewItems(String type)
+public void viewItems(String type) throws IOException
 {
 	Object[] optionsWithSort = { "Exit", "Main Menu", "Sort Descending", "Sort Ascending", "Filter"};
 	Iterator it = null; 
@@ -981,7 +982,7 @@ public static LinkedList sort(LinkedList a, boolean ascending, String attributeT
  * @param result
 
  */
-public void genericResultHandler(int result)
+public void genericResultHandler(int result) throws IOException
 {
 	if (result == 1)
 	{
@@ -1007,7 +1008,7 @@ public void genericResultHandler(int result)
  * @param sortCriteria
  *
  */
-public void sortingResultHandler(int result, String whatItemType, String sortCriteria)
+public void sortingResultHandler(int result, String whatItemType, String sortCriteria) throws IOException
 {
 	
 	
