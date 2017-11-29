@@ -64,7 +64,9 @@ public class WalmartSystem
                 int result = 1;
                 this.gatherItems(filepath); 
                 
-                
+                this.genericResultHandler(result);
+
+                System.exit(0);	
                 
                 
                 
@@ -80,31 +82,15 @@ public class WalmartSystem
 //                passwordToString(password.getText());
                 //UserApplication.search_User_Password(all, newUser);
                 
-	    	this.genericResultHandler(result);
-
-    	System.exit(0);	
+	    	
 	}
         
-        //change input to string
-//        public static String usernameToString(String username){
-//            String newusername = username;
-//            return newusername;
-//        }
+
+
         
-        public static String getUsername() {
-        return name;
-        }
+
         
-        public static String getPassword() {
-        return newpassword;
-        }
-        
-        
-//        //change input to string
-//        public static String passwordToString(String password){
-//            String newpassword = password;
-//            return newpassword;
-//        }
+
         
 	/**
 	 * This function will have one job - which is to add a designated item to the database.

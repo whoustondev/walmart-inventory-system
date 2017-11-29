@@ -29,6 +29,7 @@ import javax.swing.JTextField;
 
 public class UserApplication {
 
+    
     public static void main(String[] args) throws IOException {
         final int MAX = 100;
         int count = 0;
@@ -42,7 +43,9 @@ public class UserApplication {
         /**
          * Input & Output text file to write Student information into
          */
-        String outputPath = "src/userdb.txt";
+        //String outputPath = "src/userdb.txt";
+        String outputPath = "./IT-306WalmartInventorySystem/userdb.txt";
+        
 
         while (JOptionPane.showConfirmDialog(null, "Do you want to add user?") == JOptionPane.YES_OPTION) {
 
@@ -199,26 +202,44 @@ public class UserApplication {
         //String password = WalmartSystem.getPassword();
         String username = JOptionPane.showInputDialog("--------Login---------- \n\n\n" + "Enter Employee username: ");
         String password = JOptionPane.showInputDialog("--------Login---------- \n\n\n" + "Enter Employee password: ");
-        if (all.containsKey(username)) {
+        if (all.containsKey(username) ) {
             //newUser = all.get(username);  //retrieving student from hashmap
-            System.out.println("Found username ");
-            //System.out.println("Length of array:"+newUser.length);
-            for (int x = 0; x < User.getTotal(); x++) {
-                if (newUser[x].getPassword().equals(password)) {
-                    System.out.println("Found password ");
-
-                    isValid = true;
-
-                    //Enter system after login
+            
+            User b = all.get(username);
+            String bp = b.getPassword();
+            if (b.getPassword() != null){
+                System.out.println("Found password ");
+                 isValid = true;
+                  //Enter system after login
                     WalmartSystem system = new WalmartSystem();
                     system.run();
-                    //break;
-                } else {
-
-                    System.out.println("Password Not Found ");
-                }
-
             }
+            else{
+                 System.out.println("Password Not Found ");
+            }
+////            System.out.println(all.get("joelartey"));
+//////            System.out.println("Found username ");
+////            User b = all.get("username");
+////            String bp = b.getPassword();
+////            
+////            System.out.println("Passord test b" + b.getPassword());
+////            //System.out.println("Length of array:"+newUser.length);
+////            for (int x = 0; x < User.getTotal(); x++) {
+////                if (newUser[x].getPassword().equals(password)) {
+//                    //System.out.println("Found password ");
+//
+//                    isValid = true;
+//
+//                    //Enter system after login
+//                    WalmartSystem system = new WalmartSystem();
+//                    system.run();
+//                    //break;
+////                } else {
+////
+////                    System.out.println("Password Not Found ");
+////                }
+////
+////            }
 
         } else {
             System.out.println("username Not Found ");
