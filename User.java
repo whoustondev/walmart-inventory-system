@@ -20,7 +20,8 @@ public class User {
     private String type;
     private static int total;
 
-    public User() {
+    public User() 
+    {
         total++;
         this.userid = total;
     }
@@ -40,11 +41,14 @@ public class User {
         return username;
     }
 
-    public boolean setUsername(String username) {
+    public boolean setUsername(String username) 
+    {
         this.username = username;
         //return true;
-        for (int i = 0; i < username.length(); i++) {
-            if (!Character.isLetterOrDigit(username.charAt(i))) {
+        for (int i = 0; i < username.length(); i++) 
+        {
+            if (!Character.isLetterOrDigit(username.charAt(i))) 
+            {
                 return false;
             }
         }
