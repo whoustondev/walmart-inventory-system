@@ -1,1 +1,4 @@
-1:joela:joe lartey:joelartey:Administrator
+1;joela;joe;lartey;joelartey;Administrator
+2;mike;mike;fo;mikefornah;Employee
+3;urs;urs;la;ursulachilaka;Administrator
+4;tiff;tiff;boakye;tiffboakye;Employee
