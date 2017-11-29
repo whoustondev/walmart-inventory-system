@@ -45,7 +45,7 @@ public class WalmartSystem
 	    	panel.setBackground(Color.lightGray);
 	    	JTextField username = new JTextField(10);
 	    	JTextField password = new JTextField(10);
-	    	
+	  
 	    	 // a spacer
 	    	panel.add(new Label("Username:"));
 	    	panel.add(username);
@@ -54,10 +54,14 @@ public class WalmartSystem
 	    	panel.add(password);
 	    	
 	    	int result = JOptionPane.showOptionDialog(null, panel, "Login Page", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options2, null);
+	    	  String a =	username.getText().toString();
+	   	    
+	    	System.out.println("here is the text----->>>>>>>>>>>>" + a);
 	    	this.gatherItems(filepath);   
 	    	// This is where we would put the if else statement deciding who gets in and who doesn't
 	    	// if (username == )
 	    	this.genericResultHandler(result);
+	    	
 
     	System.exit(0);	
 	}
