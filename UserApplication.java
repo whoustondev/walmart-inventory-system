@@ -64,13 +64,14 @@ public class UserApplication {
 
         
         //Reading user information 
-        if(User.getTotal() < 1){
+        if(User.getTotal() <=1){
         System.out.println("\n\nReading user informatio....");
 
             newUser = readUser(outputPath);
 
             //filewriter(outputPath, newUser);
             all.put(newUser[readCounter].getUsername(), newUser[readCounter]);
+            login = true;
              displayAll(all);
              login = true;
         }
