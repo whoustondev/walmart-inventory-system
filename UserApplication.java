@@ -42,7 +42,7 @@ public class UserApplication {
         /**
          * Input & Output text file to write Student information into
          */
-        String outputPath = "src/out.txt";
+        String outputPath = "src/userdb.txt";
 
         while (JOptionPane.showConfirmDialog(null, "Do you want to add user?") == JOptionPane.YES_OPTION) {
 

@@ -1,2 +1,3 @@
-whouston; password; admin
-guest; password; user
+1;joela;joe;lartey;joelartey;Administrator
+2;mike;mike;for;mikefornah;Employee
+1;will;houston;houston;willhouston;Administrator
