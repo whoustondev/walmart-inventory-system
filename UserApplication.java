@@ -78,8 +78,13 @@ public class UserApplication {
             
             if(!match){
                     JOptionPane.showMessageDialog(null, "Username or Password is Invalid ");
+                    match = search_User_Password(all, newUser);
             }
         }while(!match);
+        
+         if(match == true){
+            Driver.main(args);
+        }
         
 //        System.out.println("\n\nRemoving the content....");
 //        remove(all);
@@ -178,6 +183,8 @@ public static User getInput() {
         
         boolean isValid = false;
         
+        //String username = WalmartSystem.getUsername();
+        //String password = WalmartSystem.getPassword();
         String username = JOptionPane.showInputDialog("--------Login---------- \n\n\n" +"Enter Employee username: ");
         String password = JOptionPane.showInputDialog("--------Login---------- \n\n\n" +"Enter Employee password: ");
         if(all.containsKey(username)){
