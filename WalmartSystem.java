@@ -38,8 +38,8 @@ public class WalmartSystem
 	JTextField filterField = new JTextField(10);
 	private String filepath = "./IT-306WalmartInventorySystem/data.txt";
 	
-        public static String name = "";
-        public static String newpassword = "";
+    public static String name = "";
+    public static String newpassword = "";
         
         
 	public void run() throws IOException
@@ -608,7 +608,7 @@ public void viewItems(String type) throws IOException
 	LinkedList copy;
 	
 	String filterFieldString = filterField.getText();
-	LinkedList filteredList;
+	LinkedList filteredList = new LinkedList();
 	
 	
 	
@@ -638,7 +638,7 @@ public void viewItems(String type) throws IOException
 
 		 System.out.println("our last selection was...." + lastToySortingSelection );
 		 toyDropdown.setSelectedItem(lastToySortingSelection);
-		System.out.println("printing out the selected item after calling setSelectedItem" + toyDropdown.getSelectedItem());
+		 System.out.println("printing out the selected item after calling setSelectedItem" + toyDropdown.getSelectedItem());
 		
 		
 		if(filterFieldString == null || filterFieldString == "")
@@ -742,6 +742,11 @@ public void viewItems(String type) throws IOException
 		panel.add(filterField);
 		panel.setVisible(true);		 
 		int result = JOptionPane.showOptionDialog(null, panel, "Looking at"+type+"s", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, optionsWithSort, null);	
+		
+		//System.out.println("Let's print out which row we are selecting" + table.getSelectedRow());
+		
+		//System.out.println(((Item)filteredList.get(table.getSelectedRow())).getTitle());
+		
 		String selection = "";
 		
 		System.out.println("this is the type of items we are viewing: "+type);
@@ -1014,8 +1019,7 @@ public void sortingResultHandler(int result, String whatItemType, String sortCri
 	
 	
 	if (result == 4) // We filter
-	{
-		
+	{	
 		viewItems(whatItemType);
 	}
 	else if (result == 3 || result == 2) // someone hits the sort ascending button (3) or descending (2)
