@@ -29,7 +29,6 @@ import javax.swing.JTextField;
 
 public class UserApplication {
 
-    
     public static void main(String[] args) throws IOException {
         final int MAX = 100;
         int count = 0;
@@ -45,7 +44,6 @@ public class UserApplication {
          */
         //String outputPath = "src/userdb.txt";
         String outputPath = "./IT-306WalmartInventorySystem/userdb.txt";
-        
 
         while (JOptionPane.showConfirmDialog(null, "Do you want to add user?") == JOptionPane.YES_OPTION) {
 
@@ -58,36 +56,32 @@ public class UserApplication {
             all.put(newUser[count].getUsername(), newUser[count]);
             //count of uers increments
             count++;
-            
 
         }
 //        //display all information in Hash Table
 //        System.out.println("Printing the content...");
 //        displayAll(all);
 
-        
         //Reading user information 
-        if(User.getTotal() <=1){
-        System.out.println("\n\nReading user informatio....");
+        if (User.getTotal() <= 1) {
+            System.out.println("\n\nReading user informatio....");
 
             newUser = readUser(outputPath);
 
             //filewriter(outputPath, newUser);
             all.put(newUser[readCounter].getUsername(), newUser[readCounter]);
             login = true;
-             displayAll(all);
-             login = true;
+            displayAll(all);
+            login = true;
         }
-        
+
         //display all information in Hash Table
         System.out.println("Printing the content...");
         displayAll(all);
-        
+
         //Search for username and password match
         System.out.println("\n\nSearching for username & password....");
-        
-        
-        
+
         //login(all, newUser);
         //if (count < 1) {
         if (login == true) {
@@ -118,11 +112,13 @@ public class UserApplication {
      */
     public static User getInput() {
         User user = new User();
+     
+        
         //User Name
         String username = "";
         do {
             username = JOptionPane.showInputDialog("Enter a User Name: ");
-
+         
         } while (!user.setUsername(username));
 
         //First Name
@@ -175,7 +171,7 @@ public class UserApplication {
             if (newUser[x] != null) {
                 writableString += newUser[x].getUserid() + ";"
                         + newUser[x].getUsername() + ";"
-                        + newUser[x].getFirstName() + ";" 
+                        + newUser[x].getFirstName() + ";"
                         + newUser[x].getLastName() + ";"
                         + newUser[x].getPassword() + ";"
                         + newUser[x].getType() + "\n";
@@ -202,20 +198,19 @@ public class UserApplication {
         //String password = WalmartSystem.getPassword();
         String username = JOptionPane.showInputDialog("--------Login---------- \n\n\n" + "Enter Employee username: ");
         String password = JOptionPane.showInputDialog("--------Login---------- \n\n\n" + "Enter Employee password: ");
-        if (all.containsKey(username) ) {
+        if (all.containsKey(username)) {
             //newUser = all.get(username);  //retrieving student from hashmap
-            
+
             User b = all.get(username);
             String bp = b.getPassword();
-            if (b.getPassword() != null){
+            if (b.getPassword() != null) {
                 System.out.println("Found password ");
-                 isValid = true;
-                  //Enter system after login
-                    WalmartSystem system = new WalmartSystem();
-                    system.run();
-            }
-            else{
-                 System.out.println("Password Not Found ");
+                isValid = true;
+                //Enter system after login
+                WalmartSystem system = new WalmartSystem();
+                system.run();
+            } else {
+                System.out.println("Password Not Found ");
             }
 ////            System.out.println(all.get("joelartey"));
 //////            System.out.println("Found username ");
@@ -282,15 +277,13 @@ public class UserApplication {
         //String password;
         String[] password = new String[MAX];
         //int type;
-         String typeString;
-         int[] type = new int[MAX];
+        String typeString;
+        int[] type = new int[MAX];
 
         Scanner scanRow;
         String print = "------- Reading the student records from a file ------- \n\n";
         //User u = null;
 
-       
-        
         //This is where we read lines
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
@@ -301,34 +294,32 @@ public class UserApplication {
 
                     scanRow = new Scanner(nextLine);
                     scanRow.useDelimiter(";");
-                    
+
                     id[sum] = Integer.parseInt(scanRow.next().trim());
                     user[sum].setUserid(id[sum]);
 
                     username[sum] = scanRow.next().trim();
                     user[sum].setUsername(username[sum]);
-                    
+
                     firstName[sum] = scanRow.next().trim();
                     user[sum].setFirstName(firstName[sum]);
-                    
+
                     lastName[sum] = scanRow.next().trim();
                     user[sum].setLastName(lastName[sum]);
-                    
+
                     password[sum] = scanRow.next().trim();
                     user[sum].setPassword(password[sum]);
-                    
-                    
+
                     typeString = scanRow.next().trim();
-                    
-                    if(typeString.equalsIgnoreCase("Administrator")){
+
+                    if (typeString.equalsIgnoreCase("Administrator")) {
                         user[sum].setType(1);
-                    }
-                    else{
+                    } else {
                         user[sum].setType(2);
                     }
-                    
-                    sum++;  
-                    
+
+                    sum++;
+
                 }
                 br.close();
             } catch (IOException ioex) {
@@ -341,11 +332,7 @@ public class UserApplication {
 
         return user;
     }
-    
-    
-    
-    
-    
+
 //    public static User[] readAndSortOnPrice(String outputPath) throws IOException{ 
 //        //final int MAX = 10;
 //        House[] house = new House[MAX];
@@ -422,5 +409,4 @@ public class UserApplication {
 //            br.close();
 //        }catch(FileNotFoundException e){}
 //       
-
 }
