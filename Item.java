@@ -5,10 +5,21 @@ public abstract class Item
 	private String type;
 	private int totalItemsSold;
 	private String title;
+	private static int itemId;
 	
 	public void setTitle(String title)
 	{
 		this.title = title;
+	}
+	
+	public void setId(int id)
+	{
+		this.itemId = id;
+		
+	}
+	public int getId()
+	{
+		return itemId;
 	}
 	public String getTitle()
 	{
