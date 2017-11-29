@@ -4,7 +4,7 @@ public class Book extends Item
 
 	private String author;
 	private String genre;
-	public static String [] childClassAttributes = {"Title","Author","Quantity", "Genre"};
+	public static String [] childClassAttributes = {"ItemId", "Title","Author","Quantity", "Genre"};
 	Map<String, Object> attributeMap = new HashMap<String, Object>();
 	public Book(String title, String author, String genre, int quantity)
 	{
@@ -13,6 +13,8 @@ public class Book extends Item
 		this.author = author;
 		this.genre = genre;
 		this.setType("Book");
+		attributeMap.put("ItemId", this.getId());
+		
 		attributeMap.put("Title", title);
 		attributeMap.put("Author", author);
 		attributeMap.put("Genre", genre);
@@ -41,12 +43,14 @@ public class Book extends Item
 	public Object getAttributeByIndex(int index)
 	{
 		if(index == 0)
-			return getTitle();
+			return getId();
 		else if(index == 1)
-			return getAuthor();
+			return getTitle();
 		else if(index == 2)
-			return getQuantity();
+			return getAuthor();
 		else if(index == 3)
+			return getQuantity();
+		else if(index == 4)
 			return getGenre();
 	
 		
