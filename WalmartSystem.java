@@ -1,4 +1,5 @@
 
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -37,30 +38,74 @@ public class WalmartSystem
 	JTextField filterField = new JTextField(10);
 	private String filepath = "./IT-306WalmartInventorySystem/data.txt";
 	
+        public static String name = "";
+        public static String newpassword = "";
+        
+        
 	public void run()
 	{
-		Object[] options2 = { "Cancel", "Login",};
-
-	    	JPanel panel = new JPanel();
-	    	panel.setBackground(Color.lightGray);
-	    	JTextField username = new JTextField(10);
-	    	JTextField password = new JTextField(10);
+//		Object[] options2 = { "Cancel", "Login",};
+//
+//	    	JPanel panel = new JPanel();
+//	    	panel.setBackground(Color.lightGray);
+//	    	JTextField username = new JTextField(10);
+//	    	JTextField password = new JTextField(10);
+//	    	
+//	    	 // a spacer
+//	    	panel.add(new Label("Username:"));
+//	    	panel.add(username);
+//	    	panel.add(Box.createVerticalStrut(20));
+//	    	panel.add(new Label("Password:"));
+//	    	panel.add(password);
 	    	
-	    	 // a spacer
-	    	panel.add(new Label("Username:"));
-	    	panel.add(username);
-	    	panel.add(Box.createVerticalStrut(20));
-	    	panel.add(new Label("Password:"));
-	    	panel.add(password);
+	    	//int result = JOptionPane.showOptionDialog(null, panel, "Login Page", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options2, null);
 	    	
-	    	int result = JOptionPane.showOptionDialog(null, panel, "Login Page", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options2, null);
-	    	this.gatherItems(filepath);   
+                
+                int result = 1;
+                this.gatherItems(filepath); 
+                
+                
+                
+                
+                
+                
 	    	// This is where we would put the if else statement deciding who gets in and who doesn't
 	    	// if (username == )
+                
+                //change input to string
+//                name = username.getText();
+//                newpassword = password.getText();
+                
+//                usernameToString(username.getText());
+//                passwordToString(password.getText());
+                //UserApplication.search_User_Password(all, newUser);
+                
 	    	this.genericResultHandler(result);
 
     	System.exit(0);	
 	}
+        
+        //change input to string
+//        public static String usernameToString(String username){
+//            String newusername = username;
+//            return newusername;
+//        }
+        
+        public static String getUsername() {
+        return name;
+        }
+        
+        public static String getPassword() {
+        return newpassword;
+        }
+        
+        
+//        //change input to string
+//        public static String passwordToString(String password){
+//            String newpassword = password;
+//            return newpassword;
+//        }
+        
 	/**
 	 * This function will have one job - which is to add a designated item to the database.
 	 * How this is going to work is..
@@ -417,6 +462,9 @@ public class WalmartSystem
     		else if (result == 2)
     		{
     			System.out.println("Add User");
+                        //Add user from UserApplication
+                        UserApplication.getInput();
+                        mainMenu();
     		}
       		else if (result == 1)
     		{
