@@ -39,21 +39,40 @@ public class UserApplication {
         Hashtable<String, User> all = new Hashtable<String, User>();
         User[] newUser = new User[MAX];
 
-        /**
+          /**
          * Input & Output text file to write Student information into
          */
         //String outputPath = "src/userdb.txt";
         String outputPath = "./IT-306WalmartInventorySystem/userdb.txt";
+        
+         //Reading user information 
+        if (User.getTotal() <= 1) {
+            System.out.println("\n\nReading user informatio....");
+
+            newUser = readUser(outputPath, all);
+
+            //filewriter(outputPath, newUser);
+            //all.put(newUser[readCounter].getUsername(), newUser[readCounter]);
+            login = true;
+            displayAll(all);
+            login = true;
+        }
+        
+        
+        
+        
+      
 
         while (JOptionPane.showConfirmDialog(null, "Do you want to add user?") == JOptionPane.YES_OPTION) {
 
             //Add user information to user array
-            newUser[count] = getInput();
+            newUser[count] = getInput(all);
 
             //Write information into text file
             filewriter(outputPath, newUser);
             //put information into Hash Table
-            all.put(newUser[count].getUsername(), newUser[count]);
+            readUser(outputPath, all);
+            //all.put(newUser[count].getUsername(), newUser[count]);
             //count of uers increments
             count++;
 
@@ -62,18 +81,18 @@ public class UserApplication {
 //        System.out.println("Printing the content...");
 //        displayAll(all);
 
-        //Reading user information 
-        if (User.getTotal() <= 1) {
-            System.out.println("\n\nReading user informatio....");
-
-            newUser = readUser(outputPath);
-
-            //filewriter(outputPath, newUser);
-            all.put(newUser[readCounter].getUsername(), newUser[readCounter]);
-            login = true;
-            displayAll(all);
-            login = true;
-        }
+//        //Reading user information 
+//        if (User.getTotal() <= 1) {
+//            System.out.println("\n\nReading user informatio....");
+//
+//            newUser = readUser(outputPath);
+//
+//            //filewriter(outputPath, newUser);
+//            all.put(newUser[readCounter].getUsername(), newUser[readCounter]);
+//            login = true;
+//            displayAll(all);
+//            login = true;
+//        }
 
         //display all information in Hash Table
         System.out.println("Printing the content...");
@@ -110,7 +129,7 @@ public class UserApplication {
     /**
      * Method to get add user information into user class
      */
-    public static User getInput() {
+    public static User getInput(Hashtable<String, User> all) {
         User user = new User();
      
         
@@ -118,8 +137,10 @@ public class UserApplication {
         String username = "";
         do {
             username = JOptionPane.showInputDialog("Enter a User Name: ");
-         
-        } while (!user.setUsername(username));
+            do {
+                username = JOptionPane.showInputDialog("User Name already exists\n\n"+ "Enter a New User Name: ");
+            }while(all.containsKey(username));
+        } while ((!user.setUsername(username)) && (!all.containsKey(username)));
 
         //First Name
         String firstName = "";
@@ -259,7 +280,7 @@ public class UserApplication {
 //    /**
 //     * Method to reads student information from text files and sets them to user class
 //     */
-    public static User[] readUser(String outputPath) {
+    public static User[] readUser(String outputPath, Hashtable<String, User> all) {
         final int MAX = 100;
         File file = new File(outputPath);
         int sum = 0;
@@ -317,7 +338,7 @@ public class UserApplication {
                     } else {
                         user[sum].setType(2);
                     }
-
+                    all.put(user[sum].getUsername(), user[sum]);
                     sum++;
 
                 }
