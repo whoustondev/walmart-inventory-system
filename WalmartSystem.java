@@ -62,13 +62,13 @@ public class WalmartSystem
 	    	//int result = JOptionPane.showOptionDialog(null, panel, "Login Page", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options2, null);
 	    	
                 
-                int result = 1;
-                this.gatherItems(filepath); 
-                
-                this.genericResultHandler(result);
+        int result = 1;
+        this.gatherItems(filepath); 
+        
+        this.genericResultHandler(result);
 
-                System.exit(0);	
-                
+        System.exit(0);	
+        
                 
                 
                 
@@ -534,10 +534,6 @@ public void orderNewItemsChoicePanel() throws IOException
 	return;	
 }
 
-
-
-
-
 public void viewItemOptionsJPanel() throws IOException
 {
 	// This function provides a JPanel for the main options to choose from 
@@ -599,8 +595,6 @@ public static LinkedList filter(String criteria, LinkedList a, String attribute)
 	
 }
 
-
-
 /**
  * Tell this function what type of item you want to view. 
  * pass in "Book" "Toy" or "Clothing". You know?
@@ -608,7 +602,7 @@ public static LinkedList filter(String criteria, LinkedList a, String attribute)
  */
 public void viewItems(String type) throws IOException
 {
-	Object[] optionsWithSort = { "Exit", "Main Menu", "Sort Descending", "Sort Ascending", "Filter"};
+	Object[] optionsWithSort = { "Exit", "Main Menu", "Sort Descending", "Sort Ascending", "Filter", "Delete"};
 	Iterator it = null; 
 	Clothing clothing = null;
 	Toy toy = null;
@@ -748,14 +742,23 @@ public void viewItems(String type) throws IOException
 			bookDropdown.setVisible(true);
 		}
 		Label filterLabel = new Label("\nFilter On Title:");
-	
+		Label deleteLabel = new Label ("\nDelete ItemId: ");
+		JTextField deletionField = new JTextField(10);
+		
 		panel.add(filterLabel);
 		panel.add(filterField);
+		panel.add(Box.createHorizontalStrut(20));
+		panel.add(deleteLabel);
+		
+		
+		panel.add(deletionField);
 		panel.setVisible(true);		 
+		
+		
 		int result = JOptionPane.showOptionDialog(null, panel, "Looking at"+type+"s", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, optionsWithSort, null);	
 		
-		//deletionItem = ((Item)filteredList.get(table.getSelectedRow()));
-		
+
+			
 		String selection = "";
 		
 		System.out.println("this is the type of items we are viewing: "+type);
@@ -793,7 +796,7 @@ public void viewItems(String type) throws IOException
 		
 		System.out.println("Selection: " + selection );
 				
-		sortingResultHandler(result, type, selection);
+		sortingResultHandler(result, type, selection, deletionField);
 	
 		
 		//System.out.println("Let's print out which row we are selecting" + table.getSelectedRow());
@@ -1028,11 +1031,45 @@ public void genericResultHandler(int result) throws IOException
  * @param sortCriteria
  *
  */
-public void sortingResultHandler(int result, String whatItemType, String sortCriteria) throws IOException
+public void sortingResultHandler(int result, String whatItemType, String sortCriteria, JTextField field) throws IOException
 {
 	
-	
-	
+	if (result == 5) // We delete
+	{	
+		try
+		{
+			int itemToRemove = Integer.parseInt(field.getText());
+			
+			if(whatItemType.equals("Book"))
+			{
+				ItemRemover.removeFromLinkedList(books, itemToRemove );
+				ItemRemover.removeItemFromDb(itemToRemove, filepath);
+			}
+			else if(whatItemType.equals("Clothes"))
+			{
+				ItemRemover.removeFromLinkedList(clothes, itemToRemove );
+				ItemRemover.removeItemFromDb(itemToRemove, filepath);
+				
+			}
+			else if(whatItemType.equals("Toys"))
+			{
+				ItemRemover.removeFromLinkedList(toys, itemToRemove );
+				ItemRemover.removeItemFromDb(itemToRemove, filepath);
+				
+			}
+			
+		}
+		catch(NumberFormatException nfexception)
+		{
+			System.out.println("unable to remove item");
+			
+		}
+		catch (Exception b)
+		{
+			b.printStackTrace();
+		}
+		viewItems(whatItemType);
+	}
 	if (result == 4) // We filter
 	{	
 		viewItems(whatItemType);
