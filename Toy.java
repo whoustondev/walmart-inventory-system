@@ -41,7 +41,7 @@ public class Toy extends Item
 	
 	public String toString()
 	{
-		return this.getType()+"; " +this.getTitle()+"; "+this.getQuantity()+"; "+this.getRecAge()+"\n";	
+		return this.getType() + "; " + this.getId() + "; " + this.getTitle()+"; "+this.getQuantity()+"; "+this.getRecAge()+"\n";	
 	}
 
 }

@@ -14,7 +14,6 @@ public class Book extends Item
 		this.genre = genre;
 		this.setType("Book");
 		attributeMap.put("ItemId", this.getId());
-		
 		attributeMap.put("Title", title);
 		attributeMap.put("Author", author);
 		attributeMap.put("Genre", genre);
@@ -59,7 +58,7 @@ public class Book extends Item
 	
 	public String toString()
 	{
-		return this.getType()+"; " + this.getTitle()+"; " +this.getAuthor()+"; "+this.getQuantity()+"; "+this.getGenre()+"\n";
+		return this.getType()+"; " +this.getId() + "; " +  this.getTitle()+"; " +this.getAuthor()+"; "+this.getQuantity()+"; "+this.getGenre()+"\n";
 		
 	}
 	
