@@ -1,11 +1,21 @@
 
 import java.io.*;
-public class Demo {
+import java.util.*;
+public class ItemRemover {
 	
-	public static void main (String[] args)
+	public static LinkedList removeFromLinkedList(LinkedList a, int idToRemove)
 	{
 		
-		removeItemFromDb(1, "./IT-306WalmartInventorySystem/data.txt");
+		Iterator it = a.iterator();
+		while(it.hasNext())
+		{	
+			int id = ((Item)it.next()).getId();
+			if(id == idToRemove)
+			{
+				it.remove();
+			}
+		}
+		return a;
 		
 	}
 	public static void removeItemFromDb(int itemId, String filepath)
