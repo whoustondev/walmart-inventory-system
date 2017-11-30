@@ -40,6 +40,7 @@ public class WalmartSystem
 	
     public static String name = "";
     public static String newpassword = "";
+    Item deletionItem ;
         
         
 	public void run() throws IOException
@@ -368,6 +369,8 @@ public class WalmartSystem
 	 */
 	public void gatherItems(String filepath)
 	{
+		
+		int highestIdNumber = 0; /** this int here is to find out the highest ID that is stored in the DB. Then, we set the Item class's static variable to be this for newly created objects**/
 	    	try 
 	    	{	    		
 	    		BufferedReader br = new BufferedReader(new FileReader(new File(filepath)));
@@ -379,9 +382,17 @@ public class WalmartSystem
 		    			String [] tokens = line.split(";");
 		    			System.out.println(tokens[0].trim());
 		    			System.out.println(tokens.length);
-		    			if (tokens.length == 5 && tokens[0].trim().equals(new String("Book")))
+		    		
+		    			if (tokens.length == 6 && tokens[0].trim().equals(new String("Book")))
 		    			{
-		    				Book a = new Book(tokens[1].trim(), tokens[2].trim(), tokens[4].trim(), Integer.parseInt(tokens[3].trim()));
+		    				Book a = new Book(tokens[2].trim(), tokens[3].trim(), tokens[5].trim(), Integer.parseInt(tokens[4].trim()));
+		    				System.out.println("madeithere");
+		    				int var = Integer.parseInt(tokens[1].trim());
+		    				if(var > highestIdNumber)
+		    				{
+		    					 highestIdNumber = var; 
+		    				}
+		    				a.setId(var);
 		    				this.books.add(a);
 		    			}	
 	    			}
@@ -389,9 +400,15 @@ public class WalmartSystem
 	    			{
 	    				System.out.println("Contains a toy.");
 		    			String [] tokens = line.split(";");
-		    			if (tokens.length == 4 && tokens[0].trim().equals(new String("Toy")))
+		    			if (tokens.length == 5 && tokens[0].trim().equals(new String("Toy")))
 		    			{
-		    				Toy a = new Toy(tokens[1].trim(), Integer.parseInt(tokens[2].trim()), Integer.parseInt(tokens[3].trim()));
+		    				Toy a = new Toy(tokens[2].trim(), Integer.parseInt(tokens[3].trim()), Integer.parseInt(tokens[4].trim()));
+		    				int var = Integer.parseInt(tokens[1].trim());
+		    				if(var > highestIdNumber)
+		    				{
+		    					 highestIdNumber = var; 
+		    				}
+		    				a.setId(var);
 		    				toys.add(a);
 		    			}	
 	    			}
@@ -399,15 +416,21 @@ public class WalmartSystem
 	    			{
 	    				System.out.println("Contains a Clothing item");
 		    			String [] tokens = line.split(";");
-		    			if (tokens.length == 8 && tokens[0].trim().equals(new String("Clothing")))
+		    			if (tokens.length == 9 && tokens[0].trim().equals(new String("Clothing")))
 		    			{
-		    				Clothing a = new Clothing(tokens[1].trim(), tokens[2].trim(), tokens[3].trim(), Integer.parseInt(tokens[4].trim()), Integer.parseInt(tokens[5].trim()), Integer.parseInt(tokens[6].trim()), Integer.parseInt(tokens[7].trim()));
+		    				Clothing a = new Clothing(tokens[2].trim(), tokens[3].trim(), tokens[4].trim(), Integer.parseInt(tokens[5].trim()), Integer.parseInt(tokens[6].trim()), Integer.parseInt(tokens[7].trim()), Integer.parseInt(tokens[8].trim()));
+		    				int var = Integer.parseInt(tokens[1].trim());
+		    				if(var > highestIdNumber)
+		    				{
+		    					 highestIdNumber = var; 
+		    				}
+		    				a.setId(var);
 		    				clothes.add(a);
 		    			}	
 	    			}
 	    		}
 	    		br.close();
-	    		return;
+	    		
 	    	}
 	    	catch(FileNotFoundException e)
 	    	{
@@ -417,7 +440,9 @@ public class WalmartSystem
 	    	{
 	    		f.printStackTrace();	
 	    	}	
-	    	
+	    	System.out.println("Highest Number");
+	    	System.out.println(highestIdNumber);
+	    	Item.setidCounter(highestIdNumber); /** This is so that we don't recreate any more ids that already exist. **/
 	    	return;
 	}
 
@@ -729,9 +754,7 @@ public void viewItems(String type) throws IOException
 		panel.setVisible(true);		 
 		int result = JOptionPane.showOptionDialog(null, panel, "Looking at"+type+"s", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, optionsWithSort, null);	
 		
-		//System.out.println("Let's print out which row we are selecting" + table.getSelectedRow());
-		
-		//System.out.println(((Item)filteredList.get(table.getSelectedRow())).getTitle());
+		//deletionItem = ((Item)filteredList.get(table.getSelectedRow()));
 		
 		String selection = "";
 		
@@ -771,6 +794,12 @@ public void viewItems(String type) throws IOException
 		System.out.println("Selection: " + selection );
 				
 		sortingResultHandler(result, type, selection);
+	
+		
+		//System.out.println("Let's print out which row we are selecting" + table.getSelectedRow());
+		
+		//System.out.println(((Item)filteredList.get(table.getSelectedRow())).getTitle());
+		
 	}
 	return;	
 }

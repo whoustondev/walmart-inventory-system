@@ -132,6 +132,6 @@ public class Clothing extends Item
 	
 	public String toString()
 	{
-		return this.getType()+"; " +this.getTitle()+"; "+this.getBrand()+"; "+this.getColor()+"; "+this.getQtySmall()+"; "+this.getQtyMedium()+"; "+this.getQtyLarge()+"; "+this.getQtyExtraLarge()+"\n";	
+		return this.getType()+"; " +this.getId() + "; " + this.getTitle()+"; "+this.getBrand()+"; "+this.getColor()+"; "+this.getQtySmall()+"; "+this.getQtyMedium()+"; "+this.getQtyLarge()+"; "+this.getQtyExtraLarge()+"\n";	
 	}
 }
