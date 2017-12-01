@@ -224,7 +224,7 @@ public class UserApplication {
 
             User b = all.get(username);
             String bp = b.getPassword();
-            if (b.getPassword() != null) {
+            if (password.equals(bp)) {
                 System.out.println("Found password ");
                 isValid = true;
                 //Enter system after login
