@@ -1,3 +1,5 @@
 Toy; 6; Laser Challenge; 12; 8
 Book; 7; C++ a beginner's guide; McGrawHill; 12; Reference
 Book; 8; 1984; George Orwell; 12; Science Fiction
+Book; 9; Elementary Linear Algebra; Stevie McQueen; 28; Math
+Book; 10; Michael Jackson's Life; John Doe; 3000; Music
