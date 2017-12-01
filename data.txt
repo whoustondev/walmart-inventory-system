@@ -1,5 +1,7 @@
 Toy; 6; Laser Challenge; 12; 8
-Book; 7; C++ a beginner's guide; McGrawHill; 12; Reference
 Book; 8; 1984; George Orwell; 12; Science Fiction
-Book; 9; Elementary Linear Algebra; Stevie McQueen; 28; Math
-Book; 10; Michael Jackson's Life; John Doe; 3000; Music
+Book; 11; Michael Jackson : Chillest man alive; John Doe; 3000; Fiction
+Book; 12; Life on the Edge; Will Houston; 78; Fiction
+Book; 13; Thomas's Calculus; Addison Wesley; 2; Math
+Book; 14; Brave New World; Alduos Huxley; 22; SciFi
+Book; 15; Barney; A Little Kid; 21; Children

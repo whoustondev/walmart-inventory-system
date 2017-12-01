@@ -6,7 +6,8 @@ public class Driver {
 
 	public static void main (String[] args) throws IOException
 	{
-		WalmartSystem system = new WalmartSystem();
-		system.run();		
+		WalmartSystem a = new WalmartSystem();
+		a.run();
 	}
+	
 }
