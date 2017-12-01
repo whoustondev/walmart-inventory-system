@@ -1,7 +1,4 @@
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
@@ -10,6 +7,12 @@ import java.awt.*;
 public class Login
 {
 	
+	/**
+	 * This static method, LoginScreen can be used anywhere. All it takes is a HashMap of users to verify against
+	 * When using anything from this class, use LoginScreen if you want 
+	 * @param map
+	 * @return
+	 */
 	public static boolean loginScreen(HashMap map)
 	
 	{
@@ -122,5 +125,98 @@ public class Login
         
         return map;
 	}
+
+	public static HashMap addNewUserPanel(String filepath, HashMap users) throws IOException
+	{
+		JPanel panel = new JPanel();
+
+		Object[] options = {"Exit", "Add New User"};
+
+			panel.setLayout(new GridLayout(8,1));
+			JTextField username = new JTextField(10);
+			panel.add(new Label("Username: "));
+			panel.add(username);
+			JTextField password = new JTextField(10);
+			panel.add(new Label("Password: "));
+			panel.add(password);
+			
+			JTextField firstName = new JTextField(10);
+			panel.add(new Label("Firstname: "));
+			panel.add(firstName);			
+			
+			JTextField lastName = new JTextField(10);
+			panel.add(new Label("Last Name:"));
+			panel.add(lastName);
+			
+			JTextField typeOfAccount = new JTextField(15);
+			panel.add(new Label("Administrator or User: "));
+			panel.add(typeOfAccount);		
+			
+		
+			int result = JOptionPane.showOptionDialog(null, panel, "Add New Item", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, null);			
+			
+			//Validation checks
+			if(password.getText().trim().length()<8) // Make sure password is long enough
+				{
+					return null;	
+				}
+			else if((typeOfAccount.getText().trim().toString().equals("Administrator") == false))
+				{	
+					if((typeOfAccount.getText().trim().toString().equals("User") == false))
+						{
+							return null;
+						}
+				}
+	
+			User grabIt = (User)users.get(username.getText().trim()); // Here we want to see if the user already exists
+			
+			if(grabIt == null)
+			{
+				System.out.println("User does not exist, let's add it!");
+				
+				User newUser = new User(username.getText().trim(), firstName.getText().trim(), lastName.getText().trim(), password.getText().trim(), typeOfAccount.getText().trim());
+				try
+				{
+					filewriter(filepath, newUser );
+					users.put(username.getText().trim(), newUser);
+					return users;
+				}
+				catch(IOException a)
+				{
+					return null;
+				}
+		
+				
+			}
+				
+			return null; 
+
+	}
+	
+    /**
+     * Method to write user information into text file
+     *
+     * @param outputPath
+     * @param newUser
+     * @throws java.io.IOException
+     */
+    public static void filewriter(String outputPath, User newUser) throws IOException 
+    {
+
+        //writing into text file 
+        FileWriter fw = null;
+
+        fw = new FileWriter(new File(outputPath), true);
+        BufferedWriter bw = new BufferedWriter(fw);
+        String writableString = "";
+
+        writableString += newUser.getUsername() + ";" + newUser.getFirstName() + ";" + newUser.getLastName() + ";"+ newUser.getPassword() + ";" + newUser.getType() + "\n";
+
+        //System.out.println(writableString);
+        bw.write(writableString);
+        bw.close();
+    }
+	
+	
 	
 }

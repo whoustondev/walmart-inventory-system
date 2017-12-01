@@ -8,11 +8,9 @@ import java.io.*;
 import java.util.*;
 /**
  *  TODO: Leftover tasks
- *  1. Make the buttons for sorting right underneath the drop down (ascend and descend)
  *	2. Finish the username and password database check prob. a map.
  *	3. See if there is a way to hide values in the JTextField that holds a password
  *	5. Order new Items.
- *	7. Search (filter)
  *	9. fix buttons so that the quit button is on the left and that one of the buttons is highlighted
 
  */
@@ -37,11 +35,11 @@ public class WalmartSystem
 	JComboBox toyDropdown = new JComboBox(Toy.childClassAttributes);
 	JTextField filterField = new JTextField(10);
 	private String filepath = "./IT-306WalmartInventorySystem/data.txt";
-	private String userfilepath = "./IT-306WalmartInventorySystem/userdb2.txt";
+	private String userFilePath = "./IT-306WalmartInventorySystem/userdb2.txt";
 	
     public static String name = "";
     public static String newpassword = "";
-    HashMap userMap = Login.getUsers(userfilepath);
+    HashMap userMap = Login.getUsers(userFilePath);
         
 	public void run() throws IOException
 	{
@@ -441,7 +439,7 @@ public class WalmartSystem
     		if(result == 5)
     		{
     			System.out.println("----------------------------------------------------------");
-    			UserApplication.main(null);
+    			Login.loginScreen(userMap);
     			mainMenu();
     		}
     		else if (result == 4)
@@ -458,9 +456,20 @@ public class WalmartSystem
     		{
     			System.out.println("Add User");
                         //Add user from UserApplication
-                        UserApplication.main(null);
+            //UserApplication.main(null);
                         //UserApplication.getInput();
-                        mainMenu();
+    			HashMap map = Login.addNewUserPanel(userFilePath, userMap);
+    			if(map != null)
+    			{
+    				userMap = map;
+    			}
+    			else
+    			{
+    				badInputDialog();
+    			}
+
+    			
+    			mainMenu();
     		}
       		else if (result == 1)
     		{
@@ -1005,6 +1014,32 @@ public void genericResultHandler(int result) throws IOException
 	}
 		
 }
+
+public void badInputDialog()
+{
+	Object[] options = { "Exit", "Main Menu"};
+	JPanel panel = new JPanel();
+	panel.add(new Label("Your input was invalid."));
+	int result = JOptionPane.showOptionDialog(null, panel, "Main Menu", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, null);
+	if (result == 1)
+	{
+		try 
+		{
+			
+			mainMenu();
+		}
+		catch(Exception a)
+		{
+			
+			a.printStackTrace();
+		}
+	}
+	else if (result == 0)
+	{
+		System.exit(0);
+	}
+}
+
 /**
  * This is a special kind of resulthandler I decided to make up 
  * It has the options sort ascending, sort descending, menu, and quit. 
@@ -1098,4 +1133,6 @@ public void sortingResultHandler(int result, String whatItemType, String sortCri
 }
 
 
+
 }
+
