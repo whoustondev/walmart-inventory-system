@@ -1,4 +1,5 @@
 
+import java.util.Collection;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,7 +36,7 @@ public class WalmartSystem
 	JComboBox toyDropdown = new JComboBox(Toy.childClassAttributes);
 	JTextField filterField = new JTextField(10);
 	private String filepath = "./IT-306WalmartInventorySystem/data.txt";
-	private String userFilePath = "./IT-306WalmartInventorySystem/userdb2.txt";
+	private String userFilePath = "./IT-306WalmartInventorySystem/userdb.txt";
 	private String username = "";
 
     HashMap userMap = Login.getUsers(userFilePath);
@@ -425,9 +426,9 @@ public class WalmartSystem
 	
 	{
 		// This function provides a JPanel for the main options to choose from 
-		Object[] adminOptions = { "Exit", "Order Items", "Add Users", "Add Items", "View Items", "Logout"};
+		Object[] adminOptions = { "Exit", "Add Users", "Add Items", "View Items", "Logout"};
 	
-		Object[] userOptions = { "Exit", "Order Items", "Add Items", "View Items", "Logout"};
+		Object[] userOptions = { "Exit", "Add Items", "View Items", "Logout"};
 			
 	    
     		JPanel panel = new JPanel();
@@ -435,7 +436,7 @@ public class WalmartSystem
     		if(isAdmin == true)
     		{
     			result = JOptionPane.showOptionDialog(null, panel, "Admin Main Menu", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, adminOptions, null);
-        		if(result == 5)
+        		if(result == 4)
         		{
         			isAdmin = false; 
         			username = Login.loginScreen(userMap);
@@ -445,15 +446,15 @@ public class WalmartSystem
         	        }	
         			mainMenu();
         		}
-        		else if (result == 4)
+        		else if (result == 3)
         		{
         			viewItemOptionsJPanel();
         		}
-        		else if (result == 3)
+        		else if (result == 2)
         		{
         			addNewItemOptionsJpanel();
         		}
-        		else if (result == 2)
+        		else if (result == 1)
         		{
         			HashMap map = Login.addNewUserPanel(userFilePath, userMap);
         			if(map != null)
@@ -466,11 +467,7 @@ public class WalmartSystem
         			}	
         			mainMenu();
         		}
-          		else if (result == 1)
-        		{
 
-        			orderNewItemsChoicePanel();
-        		}
         		else 
         		{
         			System.exit(0);
@@ -480,7 +477,7 @@ public class WalmartSystem
     		else
     			{
 	    			result = JOptionPane.showOptionDialog(null, panel, "User Main Menu", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, userOptions, null);
-	        		if(result == 4)
+	        		if(result == 3)
 	        		{
 	        			isAdmin = false; 
 	        			username = Login.loginScreen(userMap);
@@ -490,18 +487,15 @@ public class WalmartSystem
 	        	        }	
 	        			mainMenu();
 	        		}
-	        		else if (result == 3)
+	        		else if (result == 2)
 	        		{
 	        			viewItemOptionsJPanel();
 	        		}
-	        		else if (result == 2)
+	        		else if (result == 1)
 	        		{
 	        			addNewItemOptionsJpanel();
 	        		}
-	          		else if (result == 1)
-	        		{	
-	        			orderNewItemsChoicePanel();
-	        		}
+	 
 	        		else 
 	        		{
 	        			System.exit(0);
@@ -513,46 +507,7 @@ public class WalmartSystem
 
 	
 	
-public void orderNewItemsChoicePanel() throws IOException
-{
-	Object[] options = { "Exit", "Main Menu", "Order Books", "Order Toys", "Order Clothes"};
-	JPanel panel = new JPanel();
-	//panel.setBackground(Color.lightGray);
-	ItemOrderer orderer;
-	int result = JOptionPane.showOptionDialog(null, panel, "Main Menu", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, null);
-	System.out.println(result);
-	if (result == 4)
-	{
-		System.out.println("Order Clothes");
-		orderer = new ItemOrderer(this, clothes, filepath);
-		orderer.orderItemPanel();
-	}
-	else if (result == 3)
-	{
-		System.out.println("Order Toys");
-		orderer = new ItemOrderer(this, toys, filepath);
-		orderer.orderItemPanel();
 
-	}
-	else if (result == 2)
-	{
-		System.out.println("Order Books");
-		orderer = new ItemOrderer(this, books, filepath);
-		orderer.orderItemPanel();
-
-	}
-	else if (result == 1)
-	{
-		System.out.println("Main Menu");
-		mainMenu();
-
-	}
-	else if (result == 0)
-	{
-		System.exit(0);
-	}
-	return;	
-}
 
 public void viewItemOptionsJPanel() throws IOException
 {
@@ -843,175 +798,6 @@ public static int loopThroughReturnIndex(String[] array, String selection)
 	}
 	return -1;
 }
-/**
- * This is a helper function to convert a LinkedList to an array.
- * It is used in the sort function. 
- * @param a
- * @return
- */
-public static Item[] convertToArray(LinkedList a)
-{
-	Item[] array = new Item[a.size()];
-	//Iterator it = a.iterator();
-	//it.next();
-	for(int i = 0; i< array.length; i++)
-	{
-		array[i] = (Item)a.get(i);	
-	}
-	
-	return array;
-}
-/**
- * This is a helper function. We use it in the sorting method.
- * @param array
- * @return
- */
-public static LinkedList convertToLinkedList(Item[] array)
-{
-	
-	LinkedList listToReturn = new LinkedList();
-
-	for(int i = 0; i < array.length; i++)
-	{
-		//System.out.println(((Book)array[i]).getTitle());	
-		listToReturn.add(array[i]);
-	}
-	return listToReturn;
-}
-
-
-/**
- * This function takes in three arguments and it compares the two items for purposes of the sorting.
- * This is a little bit tricky since it has been refactored down. This function is used in the sorting function to compare stuff for ordering. 
- * But, just think of this function as a wrapper around the compareTo function. 
- * This function handles 2 items, and compares the attributes of those 2 items (depending on what kind - Book, Clothing, Toy, etc. )
- * First - checks to see what kind of objects we are dealing with by using instanceof on the two items. (if both aren't of the same class, we exit the function)
- * Second - we check to see what kind of object the attribute is. A String or an Integer are the most common
- * Third - if it's a string, we use compareTo of the attribute we grabbed (via the user choice) for the specific objects to compare against
- * 			if it's an int, it just returns a negative value (-1) if the first val is less than the second val so that the sort method knows to keep looping through objects. 
- * 
- * This function will not make any sense to you unless you also look at the sort function
- * 
- * @return
- */
-public static int customComparator(Item a, Item b, String attributeToSortBy)
-{	
-	int comparatorValue = -1;
-	if(a instanceof Clothing && b instanceof Clothing) // handles clothing
-	{
-		if(((Clothing)a).attributeMap.get(attributeToSortBy) instanceof String)
-		{
-			comparatorValue = ((String)((Clothing)a).attributeMap.get(attributeToSortBy)).toUpperCase().compareTo(((String)((Clothing)b).attributeMap.get(attributeToSortBy)).toUpperCase());
-		}
-		else if(((Clothing)a).attributeMap.get(attributeToSortBy) instanceof Integer)
-		{	
-			//System.out.println("is a less than b? : " + ((Clothing)a).attributeMap.get(Integer.parseInt(attributeToSortBy)) + "  " + ((Clothing)b).attributeMap.get(Integer.parseInt(attributeToSortBy)));
-			if((Integer)((Clothing)a).attributeMap.get(attributeToSortBy) <= (Integer)((Clothing)b).attributeMap.get(attributeToSortBy))
-			{
-				System.out.println((Integer)((Clothing)a).attributeMap.get(attributeToSortBy) + "is less than " + (Integer)((Clothing)b).attributeMap.get(attributeToSortBy));
-				comparatorValue = -1;
-			}
-			else
-			{
-				comparatorValue = 1;
-			}
-		}
-	
-	}
-	else if (a instanceof Toy && b instanceof Toy) // Handles toys
-	{
-		if(((Toy)a).attributeMap.get(attributeToSortBy) instanceof String)
-		{
-			comparatorValue = ((String)((Toy)a).attributeMap.get(attributeToSortBy)).toUpperCase().compareTo(((String)((Toy)b).attributeMap.get(attributeToSortBy)).toUpperCase());
-		}
-		else if(((Toy)a).attributeMap.get(attributeToSortBy) instanceof Integer)
-		{	
-			//System.out.println("is a less than b? : " + ((Toy)a).attributeMap.get(Integer.parseInt(attributeToSortBy)) + "  " + ((Toy)b).attributeMap.get(Integer.parseInt(attributeToSortBy)));
-			if((Integer)((Toy)a).attributeMap.get(attributeToSortBy) <= (Integer)((Toy)b).attributeMap.get(attributeToSortBy))
-			{
-				System.out.println((Integer)((Toy)a).attributeMap.get(attributeToSortBy) + "is less than " + (Integer)((Toy)b).attributeMap.get(attributeToSortBy));
-				comparatorValue = -1;
-			}
-			else
-			{
-				comparatorValue = 1;
-			}
-		}		
-	}
-	else if (a instanceof Book && b instanceof Book) // Handles books
-	{	
-		if(((Book)a).attributeMap.get(attributeToSortBy) instanceof String)
-		{
-			comparatorValue = ((String)((Book)a).attributeMap.get(attributeToSortBy)).toUpperCase().compareTo(((String)((Book)b).attributeMap.get(attributeToSortBy)).toUpperCase());
-		}
-		else if(((Book)a).attributeMap.get(attributeToSortBy) instanceof Integer)
-		{	
-			//System.out.println("is a less than b? : " + ((Book)a).attributeMap.get(Integer.parseInt(attributeToSortBy)) + "  " + ((Book)b).attributeMap.get(Integer.parseInt(attributeToSortBy)));
-			if((Integer)((Book)a).attributeMap.get(attributeToSortBy) <= (Integer)((Book)b).attributeMap.get(attributeToSortBy))
-			{
-				System.out.println((Integer)((Book)a).attributeMap.get(attributeToSortBy) + "is less than " + (Integer)((Book)b).attributeMap.get(attributeToSortBy));
-				comparatorValue = -1;
-			}
-			else
-			{
-				comparatorValue = 1;
-			}
-		}
-	}
-	return comparatorValue;	
-}
-
-/**
- * This function takes a LinkedList -> preferably of books, clothes, etc. It will return the linkedlist in order of whatever attribute you provide 
- *
- * @param LinkedList a				<-- a linkedlist of items. very fancy. 
- * @param boolean ascending     		<-- set to true if we want ascending to be true
- * @param String attributeToSortBy	<-- we pass this a linkedlist of items and so attribute toSortBy picks the attribute to sort this whole thing by. 
- *
- *	This method also uses two methods, convertToLinkedList and convertToArray (in which we are reinventing the wheel a little bit)
- *	Perhaps in the future we can widdle this down to JUST sorting the linkedlist - but I do find that hard and maybe even impossible...
- *	Sorting an array allows for much more flexibility in accessing elements directly (which is inherent in sorting arrays)
- * @return
- *
- */
-public static LinkedList sort(LinkedList a, boolean ascending, String attributeToSortBy)
-{
-	Item[] array = convertToArray(a);
-	
-	for(int i=0; i<a.size(); i++)
-	{
-		int k = i;
-		if(ascending == true)
-		{
-			
-			while( k > 0 && customComparator(array[k], array[k-1], attributeToSortBy) <= 0)			
-			{
-				System.out.println(k);
-				Item temp = array[k];
-				array[k] = array[k-1];
-				array[k-1] = temp;
-				k--;
-			}
-		}
-		else // if we want descending
-		{
-			//array[k-1].getTitle().compareTo(array[k].getTitle())
-			while( k > 0 && customComparator(array[k-1], array[k], attributeToSortBy) <= 0)			
-			{
-				//System.out.println(k);
-				Item temp = array[k];
-				array[k] = array[k-1];
-				array[k-1] = temp;
-				k--;
-			}	
-		}
-	}
-	
-	
-	LinkedList listToReturn = convertToLinkedList(array);
-	return listToReturn;
-}
-
 
 
 
@@ -1130,17 +916,17 @@ public void sortingResultHandler(int result, String whatItemType, String sortCri
 			
 		if(whatItemType.equals("Book"))
 		{
-			books = sort(books, ascending, sortCriteria);	
+			books = SortClass.mergeSort(books, ascending, sortCriteria);	
 			viewItems("Book");
 		}			
 		else if (whatItemType.equals("Clothing"))
 		{
-			clothes = sort(clothes, ascending, sortCriteria);
+			clothes = SortClass.mergeSort(clothes, ascending, sortCriteria);
 			viewItems("Clothing");
 		}			
 		else if (whatItemType.equals("Toy"))
 		{
-			toys = sort(toys, ascending, sortCriteria);
+			toys = SortClass.mergeSort(toys, ascending, sortCriteria);
 			viewItems("Toy");		
 		}
 	}

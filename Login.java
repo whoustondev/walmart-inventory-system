@@ -10,6 +10,9 @@ public class Login
 	/**
 	 * This static method, LoginScreen can be used anywhere. All it takes is a HashMap of users to verify against
 	 * When using anything from this class, use LoginScreen if you want 
+	 * 
+	 * It will return the username of the verified user. Otherwise, it won't return anything. 
+	 * A user will not be able to get past this loop without proper credentials. 
 	 * @param map
 	 * @return
 	 */
@@ -65,7 +68,14 @@ public class Login
 		
 	}
         	
-	
+	/**
+	 * This function can be used standalone or in conjunction with loginScreen. 
+	 * It returns a boolean. True if a valid login, false if it isn't 
+	 * @param map
+	 * @param username
+	 * @param password
+	 * @return
+	 */
 	public static boolean validateLogin(HashMap map, String username, String password)
 	{
 		try
@@ -88,7 +98,13 @@ public class Login
 	}
 	
 	
-	/**returns a hashamp full of users given a filepath**/
+	/**
+	 * returns a hashmap full of users given a filepath
+	 * This function is to be used with a database.
+	 * It returns all the users in hashmap form. 
+	 * 
+	 * Give it a filepath and we will return a 
+	 * **/
 	public static HashMap getUsers(String filepath)
 	{
 		HashMap<String, User> map = new HashMap<String, User>();
@@ -101,28 +117,17 @@ public class Login
             		String [] tokens = line.split(";");
             		if(tokens.length == 5)
             		{
-            			map.put(tokens[0].trim(), new User(tokens[0].trim(), tokens[1].trim(), tokens[2].trim(), tokens[3].trim(), tokens[4].trim()));
-            			System.out.println("added a user");
-            			System.out.println(tokens[0]);
-            			System.out.println(tokens[1]);
-            			System.out.println(tokens[2]);
-            			System.out.println(tokens[3]);
-            			System.out.println(tokens[4]);
-            			
-            			
+            			map.put(tokens[0].trim(), new User(tokens[0].trim(), tokens[1].trim(), tokens[2].trim(), tokens[3].trim(), tokens[4].trim()));  			
             		}
             		else
             		{
-            			return null;
-            			
-            		}
-            	
+            			return null;   			
+            		}  	
             }
         	}
         catch(IOException e)
         {
-        		e.printStackTrace();
-        	
+        		e.printStackTrace();  	
         }
         catch(Exception f)
         {
@@ -131,7 +136,18 @@ public class Login
         
         return map;
 	}
-
+/**
+ * What this function does is take a filepath and a HashMap.
+ * It will attempt to add a new User. If the same user already exists in the hashmap,it will return null.
+ * 
+ * This function either returns an updated hashmap of users (plus the new one )
+ * OR, it returns null so that the main program can do something about it. 
+ * 
+ * @param filepath
+ * @param users
+ * @return
+ * @throws IOException
+ */
 	public static HashMap addNewUserPanel(String filepath, HashMap users) throws IOException
 	{
 		JPanel panel = new JPanel();

@@ -5,6 +5,7 @@ public class Toy extends Item
 {
 	private int recommendedAge;
 	public static String [] childClassAttributes = {"ItemId", "Title","Quantity","Recommended Age"};
+	
 	Map<String, Object> attributeMap = new HashMap<String, Object>();
 	public Toy(String title, int quantity, int recommendedAge )
 	{
@@ -16,7 +17,7 @@ public class Toy extends Item
 		attributeMap.put("ItemId", this.getId());
 		attributeMap.put("Recommended Age", recommendedAge);
 		attributeMap.put("Quantity", quantity);
-
+	
 	}
 	public int getRecAge()
 	{

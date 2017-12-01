@@ -1,7 +1,15 @@
 
 import java.io.*;
+
 import java.util.*;
-public class ItemRemover {
+
+/**
+ * This is an item remover toolbox.
+ * @author whouston
+ *
+ */
+public class ItemRemover 
+{
 	
 	public static LinkedList removeFromLinkedList(LinkedList a, int idToRemove)
 	{
@@ -34,10 +42,7 @@ public class ItemRemover {
 					if(tokens[1].trim().contains(itemIdAsString))
 					{
 						System.out.println("item contains taht ID");
-						
-						
-						
-						
+		
 					}
 					else
 					{
