@@ -37,58 +37,35 @@ public class WalmartSystem
 	JComboBox toyDropdown = new JComboBox(Toy.childClassAttributes);
 	JTextField filterField = new JTextField(10);
 	private String filepath = "./IT-306WalmartInventorySystem/data.txt";
+	private String userfilepath = "./IT-306WalmartInventorySystem/userdb2.txt";
 	
     public static String name = "";
     public static String newpassword = "";
-    Item deletionItem ;
-        
+    HashMap userMap = Login.getUsers(userfilepath);
         
 	public void run() throws IOException
 	{
-//		Object[] options2 = { "Cancel", "Login",};
-//
-//	    	JPanel panel = new JPanel();
-//	    	panel.setBackground(Color.lightGray);
-//	    	JTextField username = new JTextField(10);
-//	    	JTextField password = new JTextField(10);
-//	    	
-//	    	 // a spacer
-//	    	panel.add(new Label("Username:"));
-//	    	panel.add(username);
-//	    	panel.add(Box.createVerticalStrut(20));
-//	    	panel.add(new Label("Password:"));
-//	    	panel.add(password);
-	    	
-	    	//int result = JOptionPane.showOptionDialog(null, panel, "Login Page", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options2, null);
-	    	
+
                 
         int result = 1;
+
+        Login.loginScreen(userMap);
+
+        
         this.gatherItems(filepath); 
         
         this.genericResultHandler(result);
 
         System.exit(0);	
         
-                
-                
-                
-	    	// This is where we would put the if else statement deciding who gets in and who doesn't
-	    	// if (username == )
-                
-                //change input to string
-//                name = username.getText();
-//                newpassword = password.getText();
-                
-//                usernameToString(username.getText());
-//                passwordToString(password.getText());
-                //UserApplication.search_User_Password(all, newUser);
+		
+
                 
 	    	
 	}
         
 
 
-        
 
         
 
@@ -454,13 +431,20 @@ public class WalmartSystem
 	{
 		// This function provides a JPanel for the main options to choose from 
 		
-	    Object[] options1 = { "Exit", "Order Items", "Add Users", "Add Items", "View Items"};
+	    Object[] options1 = { "Exit", "Order Items", "Add Users", "Add Items", "View Items", "Logout"};
     		JPanel panel = new JPanel();
     		//panel.setBackground(Color.lightGray);
     		
     		int result = JOptionPane.showOptionDialog(null, panel, "Main Menu", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, null);
     		System.out.println(result);
-    		if (result == 4)
+    		
+    		if(result == 5)
+    		{
+    			System.out.println("----------------------------------------------------------");
+    			UserApplication.main(null);
+    			mainMenu();
+    		}
+    		else if (result == 4)
     		{
     			System.out.println("View Items");
     			viewItemOptionsJPanel();
@@ -757,7 +741,7 @@ public void viewItems(String type) throws IOException
 		
 		int result = JOptionPane.showOptionDialog(null, panel, "Looking at"+type+"s", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, optionsWithSort, null);	
 		
-
+		
 			
 		String selection = "";
 		
