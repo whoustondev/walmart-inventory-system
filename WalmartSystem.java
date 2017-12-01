@@ -36,29 +36,26 @@ public class WalmartSystem
 	JTextField filterField = new JTextField(10);
 	private String filepath = "./IT-306WalmartInventorySystem/data.txt";
 	private String userFilePath = "./IT-306WalmartInventorySystem/userdb2.txt";
-	
-    public static String name = "";
-    public static String newpassword = "";
+	private String username = "";
+
     HashMap userMap = Login.getUsers(userFilePath);
-        
+    boolean isAdmin = false;
+    
 	public void run() throws IOException
-	{
-
-                
+	{             
         int result = 1;
-
-        Login.loginScreen(userMap);
-
+        username = Login.loginScreen(userMap);
+        if(((User)userMap.get(username)).getType().equals("Administrator"))
+        {
+        		isAdmin = true;
+        }
+  
         
         this.gatherItems(filepath); 
         
         this.genericResultHandler(result);
 
-        System.exit(0);	
-        
-		
-
-                
+        System.exit(0);	         
 	    	
 	}
         
@@ -428,59 +425,89 @@ public class WalmartSystem
 	
 	{
 		// This function provides a JPanel for the main options to choose from 
-		
-	    Object[] options1 = { "Exit", "Order Items", "Add Users", "Add Items", "View Items", "Logout"};
+		Object[] adminOptions = { "Exit", "Order Items", "Add Users", "Add Items", "View Items", "Logout"};
+	
+		Object[] userOptions = { "Exit", "Order Items", "Add Items", "View Items", "Logout"};
+			
+	    
     		JPanel panel = new JPanel();
-    		//panel.setBackground(Color.lightGray);
-    		
-    		int result = JOptionPane.showOptionDialog(null, panel, "Main Menu", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, null);
-    		System.out.println(result);
-    		
-    		if(result == 5)
+    		int result = 0;
+    		if(isAdmin == true)
     		{
-    			System.out.println("----------------------------------------------------------");
-    			Login.loginScreen(userMap);
-    			mainMenu();
-    		}
-    		else if (result == 4)
-    		{
-    			System.out.println("View Items");
-    			viewItemOptionsJPanel();
-    		}
-    		else if (result == 3)
-    		{
-    			System.out.println("Add Items");
-    			addNewItemOptionsJpanel();
-    		}
-    		else if (result == 2)
-    		{
-    			System.out.println("Add User");
-                        //Add user from UserApplication
-            //UserApplication.main(null);
-                        //UserApplication.getInput();
-    			HashMap map = Login.addNewUserPanel(userFilePath, userMap);
-    			if(map != null)
-    			{
-    				userMap = map;
-    			}
-    			else
-    			{
-    				badInputDialog();
-    			}
+    			result = JOptionPane.showOptionDialog(null, panel, "Admin Main Menu", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, adminOptions, null);
+        		if(result == 5)
+        		{
+        			isAdmin = false; 
+        			username = Login.loginScreen(userMap);
+        	        if(((User)userMap.get(username)).getType().equals("Administrator"))
+        	        {
+        	        		isAdmin = true;
+        	        }	
+        			mainMenu();
+        		}
+        		else if (result == 4)
+        		{
+        			viewItemOptionsJPanel();
+        		}
+        		else if (result == 3)
+        		{
+        			addNewItemOptionsJpanel();
+        		}
+        		else if (result == 2)
+        		{
+        			HashMap map = Login.addNewUserPanel(userFilePath, userMap);
+        			if(map != null)
+        			{
+        				userMap = map;
+        			}
+        			else
+        			{
+        				badInputDialog();
+        			}	
+        			mainMenu();
+        		}
+          		else if (result == 1)
+        		{
 
-    			
-    			mainMenu();
+        			orderNewItemsChoicePanel();
+        		}
+        		else 
+        		{
+        			System.exit(0);
+        		}		
+
     		}
-      		else if (result == 1)
-    		{
-    			System.out.println("Order Items");
-    			orderNewItemsChoicePanel();
-    		}
-    		else 
-    		{
-    			System.out.println("result was 0");
-    			System.exit(0);
-    		}			
+    		else
+    			{
+	    			result = JOptionPane.showOptionDialog(null, panel, "User Main Menu", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, userOptions, null);
+	        		if(result == 4)
+	        		{
+	        			isAdmin = false; 
+	        			username = Login.loginScreen(userMap);
+	        	        if(((User)userMap.get(username)).getType().equals("Administrator"))
+	        	        {
+	        	        		isAdmin = true;
+	        	        }	
+	        			mainMenu();
+	        		}
+	        		else if (result == 3)
+	        		{
+	        			viewItemOptionsJPanel();
+	        		}
+	        		else if (result == 2)
+	        		{
+	        			addNewItemOptionsJpanel();
+	        		}
+	          		else if (result == 1)
+	        		{	
+	        			orderNewItemsChoicePanel();
+	        		}
+	        		else 
+	        		{
+	        			System.exit(0);
+	        		}		
+    			}
+    		
 		return;
 	}
 

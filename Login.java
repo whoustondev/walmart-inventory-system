@@ -13,10 +13,12 @@ public class Login
 	 * @param map
 	 * @return
 	 */
-	public static boolean loginScreen(HashMap map)
+	public static String loginScreen(HashMap map)
 	
 	{
 		boolean displayWrongInputMessage = false;
+		boolean isAdmin = false;
+		String returnTheUserName = "";
 		boolean validUser = false;
 		while(validUser == false)
 		{
@@ -46,6 +48,7 @@ public class Login
 		    	if(result == 0)
 		    	{
 		    		validUser = validateLogin(map, info[0], info[1]);
+		    		returnTheUserName = info[0];
 		    	}
 		    	else
 		    	{
@@ -55,7 +58,10 @@ public class Login
 		    	displayWrongInputMessage = true;
 			
 		}
-		return validUser;
+		if(validUser == true)
+			return returnTheUserName;
+		
+		return null;
 		
 	}
         	
