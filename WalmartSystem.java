@@ -554,7 +554,9 @@ public void viewItemOptionsJPanel() throws IOException
 public static LinkedList filter(String criteria, LinkedList a, String attribute)
 {
 	LinkedList<Item> newList = new LinkedList<Item>();
-	
+	System.out.println("I am actually in the filter function WTF>>>>");
+	if(criteria.equals(""))
+		return a;
 	
 	for(Object string: a)
 	{
@@ -601,7 +603,7 @@ public void viewItems(String type) throws IOException
 	 	System.out.println("our last selection was...." + lastClothingSortingSelection );
 	 	clothingDropdown.setSelectedItem(lastClothingSortingSelection);
 		System.out.println("printing out the selected item after calling setSelectedItem" + clothingDropdown.getSelectedItem());
-		if(filterFieldString == null || filterFieldString == "")
+		if(filterFieldString == null || filterFieldString.equals(""))
 			filteredList = clothes;
 		else
 			filteredList = filter(filterFieldString, clothes, clothingDropdown.getSelectedItem().toString());
@@ -621,7 +623,7 @@ public void viewItems(String type) throws IOException
 		 System.out.println("printing out the selected item after calling setSelectedItem" + toyDropdown.getSelectedItem());
 		
 		
-		if(filterFieldString == null || filterFieldString == "")
+		if(filterFieldString == null || filterFieldString.equals(""))
 			filteredList = toys;
 		else
 			filteredList = filter(filterFieldString, toys, toyDropdown.getSelectedItem().toString());
@@ -641,11 +643,15 @@ public void viewItems(String type) throws IOException
 		System.out.println("our last selection was...." + lastBookSortingSelection );
 		bookDropdown.setSelectedItem(lastBookSortingSelection);
 		System.out.println("printing out the selected item after calling setSelectedItem" + bookDropdown.getSelectedItem());
-		if(filterFieldString == null || filterFieldString == "")
-			filteredList = books;
-		else
+		if(filterFieldString == null || filterFieldString.equals(""))
+			{
+				filteredList = books;
+			}
+		else 
+		{
 			filteredList = filter(filterFieldString, books, bookDropdown.getSelectedItem().toString());
-			
+			System.out.println("I suppose I called the filter function....."+ filterFieldString);
+		}
 		it = filteredList.iterator();
 		rows = new Object[filteredList.size()][numberOfColumns];
 		
@@ -916,7 +922,9 @@ public void sortingResultHandler(int result, String whatItemType, String sortCri
 			
 		if(whatItemType.equals("Book"))
 		{
+			System.out.println("we are good up until here");
 			books = SortClass.mergeSort(books, ascending, sortCriteria);	
+			System.out.println("WE DIDNT GET BACK UHERE");
 			viewItems("Book");
 		}			
 		else if (whatItemType.equals("Clothing"))

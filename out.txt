@@ -1,7 +1,0 @@
-1;joela;joe;la;joelartey;Administrator
-1;mike;mike;for;mikefornah;Employee
-1;kim;kim;lee;kimkimlee;Employee
-1;abedi;abedi;pele;abedipele;Employee
-1;kkd;kkd;kkd;kkdlartey;Employee
-7;bj;bj;cook;bjcookbjcook;Employee
-7;linda;linda;lartey;lindalartey;Administrator

@@ -19,26 +19,25 @@ public class SortClass
 	 */
 	public static void main (String[] args) throws IOException
 	{
-		Toy a = new Toy("Laser Challenge", 12, 14);
-		a.setId(100);
-		Toy b = new Toy("Barbie", 14, 15);
-		b.setId(2000);
-		Toy c = new Toy("Toy Guitar", 200, 300);
-		c.setId(40);
-		LinkedList<Toy> toys = new LinkedList<Toy>();
-		toys.add(a);
+		Book a = new Book("1984", "George Orwell", "SciFi", 12);
 		
-		toys.add(b);
+		Book b = new Book("Linear Algebra", "Addison Wesley", "SciFi", 12);
 		
-		toys.add(c);
+		Book c= new Book("Python", "O'reilly", "Reference", 12);
+		
+		LinkedList<Book> books = new LinkedList<Book>();
+		books.add(a);
+		
+		books.add(b);
+		
+		books.add(c);
 
-		toys = mergeSort(toys, true, "Title");
-		Iterator it = toys.iterator();
+		books = mergeSort(books, true, "Genre");
+		Iterator it = books.iterator();
 		while(it.hasNext() == true)
 		{
-			System.out.println(((Item)it.next()).getTitle());
-			
-			
+			System.out.println(((Book)it.next()).getGenre());
+
 		}
 		
 	}
@@ -137,6 +136,21 @@ public class SortClass
 						indexLeft++;
 					}
 				}
+				else if (ItemComparator.customComparator(leftArray[indexLeft], rightArray[indexRight], attributeToSortBy) == 0)				
+				{
+					if(ascending == true)
+					{
+						results[i] = rightArray[indexRight];
+						indexRight++;
+					}
+					else
+					{
+						results[i] = leftArray[indexLeft];
+						indexLeft++;
+					}
+				}
+				
+				
 			}
 		}
 		return results;
