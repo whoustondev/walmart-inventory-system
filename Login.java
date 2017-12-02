@@ -80,7 +80,7 @@ public class Login
 	{
 		try
 		{
-			System.out.println(map.get("whouston"));
+			//System.out.println(map.get("whouston"));
 			if((((User)map.get(username)).getPassword()).equals(password)) //check if passwords match
 			{
 				System.out.println("validated a user as true");
@@ -110,19 +110,17 @@ public class Login
 		HashMap<String, User> map = new HashMap<String, User>();
         try 
         {
+        	System.out.println("we are reading");
             BufferedReader br = new BufferedReader(new FileReader(filepath));
             String line = "";
             while((line = br.readLine()) != null)
             {
             		String [] tokens = line.split(";");
             		if(tokens.length == 5)
-            		{
+            		{	System.out.println(tokens[0]);
             			map.put(tokens[0].trim(), new User(tokens[0].trim(), tokens[1].trim(), tokens[2].trim(), tokens[3].trim(), tokens[4].trim()));  			
             		}
-            		else
-            		{
-            			return null;   			
-            		}  	
+
             }
         	}
         catch(IOException e)
@@ -133,7 +131,7 @@ public class Login
         {
         		f.printStackTrace();
         }
-        
+        System.out.println("this map is this big"+map.size());
         return map;
 	}
 /**
