@@ -5,11 +5,27 @@ public abstract class Item
 	private String type;
 	private int totalItemsSold;
 	private String title;
-	private static int itemId;
-	
+
+	private static int idCounter = 0;
+	private int itemId;
+
 	public void setTitle(String title)
 	{
 		this.title = title;
+		idCounter++;
+		this.itemId = idCounter;
+		
+		
+	}
+
+	/**
+	 * YEah so we need this method because we are storing objects in a database with their IDs. We also need a way to keep track of the ID's that have been previously used.
+	 * One way to do this, is to find the highest ID number and then start the creation process at that specific number. 
+	 * @param a
+	 */
+	public static void setidCounter(int a)
+	{
+		idCounter = a;
 	}
 	
 	public void setId(int id)

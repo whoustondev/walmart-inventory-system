@@ -1,4 +1,6 @@
 
+import java.util.Collection;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -7,11 +9,9 @@ import java.io.*;
 import java.util.*;
 /**
  *  TODO: Leftover tasks
- *  1. Make the buttons for sorting right underneath the drop down (ascend and descend)
  *	2. Finish the username and password database check prob. a map.
  *	3. See if there is a way to hide values in the JTextField that holds a password
  *	5. Order new Items.
- *	7. Search (filter)
  *	9. fix buttons so that the quit button is on the left and that one of the buttons is highlighted
 
  */
@@ -36,35 +36,38 @@ public class WalmartSystem
 	JComboBox toyDropdown = new JComboBox(Toy.childClassAttributes);
 	JTextField filterField = new JTextField(10);
 	private String filepath = "./IT-306WalmartInventorySystem/data.txt";
-	
-	public void run()
-	{
-		Object[] options2 = { "Cancel", "Login",};
 
-	    	JPanel panel = new JPanel();
-	    	panel.setBackground(Color.lightGray);
-	    	JTextField username = new JTextField(10);
-	    	JTextField password = new JTextField(10);
-	  
-	    	 // a spacer
-	    	panel.add(new Label("Username:"));
-	    	panel.add(username);
-	    	panel.add(Box.createVerticalStrut(20));
-	    	panel.add(new Label("Password:"));
-	    	panel.add(password);
-	    	
-	    	int result = JOptionPane.showOptionDialog(null, panel, "Login Page", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options2, null);
-	    	  String a =	username.getText().toString();
-	   	    
-	    	System.out.println("here is the text----->>>>>>>>>>>>" + a);
-	    	this.gatherItems(filepath);   
-	    	// This is where we would put the if else statement deciding who gets in and who doesn't
-	    	// if (username == )
-	    	this.genericResultHandler(result);
+	private String userFilePath = "./IT-306WalmartInventorySystem/userdb.txt";
+	private String username = "";
+
+    HashMap userMap = Login.getUsers(userFilePath);
+    boolean isAdmin = false;
+    
+	public void run() throws IOException
+	{             
+        int result = 1;
+        username = Login.loginScreen(userMap);
+        if(((User)userMap.get(username)).getType().equals("Administrator"))
+        {
+        		isAdmin = true;
+        }
+  
+        
+        this.gatherItems(filepath); 
+        
+        this.genericResultHandler(result);
+
+        System.exit(0);	         
 	    	
 
-    	System.exit(0);	
 	}
+        
+
+
+
+        
+
+        
 	/**
 	 * This function will have one job - which is to add a designated item to the database.
 	 * How this is going to work is..
@@ -120,7 +123,7 @@ public class WalmartSystem
 			books.add((Book)a);			
 		}		
 	}
-	public void addNewItemOptionsJpanel()
+	public void addNewItemOptionsJpanel() throws IOException
 	{ 
 		//Object[] addItemOptions = {  "Main Menu", "Add Clothing", "Add Toy", "Add Book", "Exit"};
 		Object[] addItemOptions = {  "Exit", "Add Book", "Add Toy", "Add Clothing", "Main Menu"};
@@ -164,7 +167,7 @@ public class WalmartSystem
 		}
 	}
 	
-	public void addNewClothingPanel()
+	public void addNewClothingPanel() throws IOException
 	{
 		JPanel panel = new JPanel();
 
@@ -222,7 +225,7 @@ public class WalmartSystem
 	}
 	
 	
-	public void addNewBookPanel()
+	public void addNewBookPanel() throws IOException
 	{
 		JPanel panel = new JPanel();
 		Object[] options = {"Exit", "Main Menu", "Add Item"};
@@ -274,7 +277,7 @@ public class WalmartSystem
 	 * there could be a way to dynamically make the add functions.
 	 * Perhaps dynamically storing the text field info in a hashmap (or something)
 	 */
-	public void addNewToyPanel()
+	public void addNewToyPanel() throws IOException
 	{
 		JPanel panel = new JPanel();
 
@@ -323,7 +326,7 @@ public class WalmartSystem
 	 * It will give a user the option to go back to the main menu, or exit. 
 	 * 
 	 */
-	public void invalidInputPanel()
+	public void invalidInputPanel() throws IOException
 	{
 		Object[] simpleOptions = { "Exit", "Main Menu"};
 		JPanel panel = new JPanel();
@@ -341,6 +344,8 @@ public class WalmartSystem
 	 */
 	public void gatherItems(String filepath)
 	{
+		
+		int highestIdNumber = 0; /** this int here is to find out the highest ID that is stored in the DB. Then, we set the Item class's static variable to be this for newly created objects**/
 	    	try 
 	    	{	    		
 	    		BufferedReader br = new BufferedReader(new FileReader(new File(filepath)));
@@ -352,9 +357,17 @@ public class WalmartSystem
 		    			String [] tokens = line.split(";");
 		    			System.out.println(tokens[0].trim());
 		    			System.out.println(tokens.length);
-		    			if (tokens.length == 5 && tokens[0].trim().equals(new String("Book")))
+		    		
+		    			if (tokens.length == 6 && tokens[0].trim().equals(new String("Book")))
 		    			{
-		    				Book a = new Book(tokens[1].trim(), tokens[2].trim(), tokens[4].trim(), Integer.parseInt(tokens[3].trim()));
+		    				Book a = new Book(tokens[2].trim(), tokens[3].trim(), tokens[5].trim(), Integer.parseInt(tokens[4].trim()));
+		    				System.out.println("madeithere");
+		    				int var = Integer.parseInt(tokens[1].trim());
+		    				if(var > highestIdNumber)
+		    				{
+		    					 highestIdNumber = var; 
+		    				}
+		    				a.setId(var);
 		    				this.books.add(a);
 		    			}	
 	    			}
@@ -362,9 +375,15 @@ public class WalmartSystem
 	    			{
 	    				System.out.println("Contains a toy.");
 		    			String [] tokens = line.split(";");
-		    			if (tokens.length == 4 && tokens[0].trim().equals(new String("Toy")))
+		    			if (tokens.length == 5 && tokens[0].trim().equals(new String("Toy")))
 		    			{
-		    				Toy a = new Toy(tokens[1].trim(), Integer.parseInt(tokens[2].trim()), Integer.parseInt(tokens[3].trim()));
+		    				Toy a = new Toy(tokens[2].trim(), Integer.parseInt(tokens[3].trim()), Integer.parseInt(tokens[4].trim()));
+		    				int var = Integer.parseInt(tokens[1].trim());
+		    				if(var > highestIdNumber)
+		    				{
+		    					 highestIdNumber = var; 
+		    				}
+		    				a.setId(var);
 		    				toys.add(a);
 		    			}	
 	    			}
@@ -372,15 +391,21 @@ public class WalmartSystem
 	    			{
 	    				System.out.println("Contains a Clothing item");
 		    			String [] tokens = line.split(";");
-		    			if (tokens.length == 8 && tokens[0].trim().equals(new String("Clothing")))
+		    			if (tokens.length == 9 && tokens[0].trim().equals(new String("Clothing")))
 		    			{
-		    				Clothing a = new Clothing(tokens[1].trim(), tokens[2].trim(), tokens[3].trim(), Integer.parseInt(tokens[4].trim()), Integer.parseInt(tokens[5].trim()), Integer.parseInt(tokens[6].trim()), Integer.parseInt(tokens[7].trim()));
+		    				Clothing a = new Clothing(tokens[2].trim(), tokens[3].trim(), tokens[4].trim(), Integer.parseInt(tokens[5].trim()), Integer.parseInt(tokens[6].trim()), Integer.parseInt(tokens[7].trim()), Integer.parseInt(tokens[8].trim()));
+		    				int var = Integer.parseInt(tokens[1].trim());
+		    				if(var > highestIdNumber)
+		    				{
+		    					 highestIdNumber = var; 
+		    				}
+		    				a.setId(var);
 		    				clothes.add(a);
 		    			}	
 	    			}
 	    		}
 	    		br.close();
-	    		return;
+	    		
 	    	}
 	    	catch(FileNotFoundException e)
 	    	{
@@ -390,99 +415,103 @@ public class WalmartSystem
 	    	{
 	    		f.printStackTrace();	
 	    	}	
-	    	
+	    	System.out.println("Highest Number");
+	    	System.out.println(highestIdNumber);
+	    	Item.setidCounter(highestIdNumber); /** This is so that we don't recreate any more ids that already exist. **/
 	    	return;
 	}
 
 	/**
 	 * The main menu function. 
 	 */
-	public void mainMenu()
+	public void mainMenu() throws IOException
 	
 	{
 		// This function provides a JPanel for the main options to choose from 
-		
-	    Object[] options1 = { "Exit", "Order Items", "Add Users", "Add Items", "View Items"};
+		Object[] adminOptions = { "Exit", "Add Users", "Add Items", "View Items", "Logout"};
+	
+		Object[] userOptions = { "Exit", "Add Items", "View Items", "Logout"};
+			
+	    
     		JPanel panel = new JPanel();
-    		//panel.setBackground(Color.lightGray);
+    		int result = 0;
+    		if(isAdmin == true)
+    		{
+    			result = JOptionPane.showOptionDialog(null, panel, "Admin Main Menu", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, adminOptions, null);
+        		if(result == 4)
+        		{
+        			isAdmin = false; 
+        			username = Login.loginScreen(userMap);
+        	        if(((User)userMap.get(username)).getType().equals("Administrator"))
+        	        {
+        	        		isAdmin = true;
+        	        }	
+        			mainMenu();
+        		}
+        		else if (result == 3)
+        		{
+        			viewItemOptionsJPanel();
+        		}
+        		else if (result == 2)
+        		{
+        			addNewItemOptionsJpanel();
+        		}
+        		else if (result == 1)
+        		{
+        			HashMap map = Login.addNewUserPanel(userFilePath, userMap);
+        			if(map != null)
+        			{
+        				userMap = map;
+        			}
+        			else
+        			{
+        				badInputDialog();
+        			}	
+        			mainMenu();
+        		}
+
+        		else 
+        		{
+        			System.exit(0);
+        		}		
+
+    		}
+    		else
+    			{
+	    			result = JOptionPane.showOptionDialog(null, panel, "User Main Menu", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, userOptions, null);
+	        		if(result == 3)
+	        		{
+	        			isAdmin = false; 
+	        			username = Login.loginScreen(userMap);
+	        	        if(((User)userMap.get(username)).getType().equals("Administrator"))
+	        	        {
+	        	        		isAdmin = true;
+	        	        }	
+	        			mainMenu();
+	        		}
+	        		else if (result == 2)
+	        		{
+	        			viewItemOptionsJPanel();
+	        		}
+	        		else if (result == 1)
+	        		{
+	        			addNewItemOptionsJpanel();
+	        		}
+	 
+	        		else 
+	        		{
+	        			System.exit(0);
+	        		}		
+    			}
     		
-    		int result = JOptionPane.showOptionDialog(null, panel, "Main Menu", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, null);
-    		System.out.println(result);
-    		if (result == 4)
-    		{
-    			System.out.println("View Items");
-    			viewItemOptionsJPanel();
-    		}
-    		else if (result == 3)
-    		{
-    			System.out.println("Add Items");
-    			addNewItemOptionsJpanel();
-    		}
-    		else if (result == 2)
-    		{
-    			System.out.println("Add User");
-    		}
-      		else if (result == 1)
-    		{
-    			System.out.println("Order Items");
-    			orderNewItemsChoicePanel();
-    		}
-    		else 
-    		{
-    			System.out.println("result was 0");
-    			System.exit(0);
-    		}			
 		return;
 	}
 
 	
 	
-public void orderNewItemsChoicePanel()
-{
-	Object[] options = { "Exit", "Main Menu", "Order Books", "Order Toys", "Order Clothes"};
-	JPanel panel = new JPanel();
-	//panel.setBackground(Color.lightGray);
-	ItemOrderer orderer;
-	int result = JOptionPane.showOptionDialog(null, panel, "Main Menu", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, null);
-	System.out.println(result);
-	if (result == 4)
-	{
-		System.out.println("Order Clothes");
-		orderer = new ItemOrderer(this, clothes, filepath);
-		orderer.orderItemPanel();
-	}
-	else if (result == 3)
-	{
-		System.out.println("Order Toys");
-		orderer = new ItemOrderer(this, toys, filepath);
-		orderer.orderItemPanel();
-
-	}
-	else if (result == 2)
-	{
-		System.out.println("Order Books");
-		orderer = new ItemOrderer(this, books, filepath);
-		orderer.orderItemPanel();
-
-	}
-	else if (result == 1)
-	{
-		System.out.println("Main Menu");
-		mainMenu();
-
-	}
-	else if (result == 0)
-	{
-		System.exit(0);
-	}
-	return;	
-}
 
 
-
-
-
-public void viewItemOptionsJPanel()
+public void viewItemOptionsJPanel() throws IOException
 {
 	// This function provides a JPanel for the main options to choose from 
 	filterField.setText("");// So Filter is empty
@@ -527,7 +556,9 @@ public void viewItemOptionsJPanel()
 public static LinkedList filter(String criteria, LinkedList a, String attribute)
 {
 	LinkedList<Item> newList = new LinkedList<Item>();
-	
+	System.out.println("I am actually in the filter function WTF>>>>");
+	if(criteria.equals(""))
+		return a;
 	
 	for(Object string: a)
 	{
@@ -543,16 +574,14 @@ public static LinkedList filter(String criteria, LinkedList a, String attribute)
 	
 }
 
-
-
 /**
  * Tell this function what type of item you want to view. 
  * pass in "Book" "Toy" or "Clothing". You know?
  * @param type
  */
-public void viewItems(String type)
+public void viewItems(String type) throws IOException
 {
-	Object[] optionsWithSort = { "Exit", "Main Menu", "Sort Descending", "Sort Ascending", "Filter"};
+	Object[] optionsWithSort = { "Exit", "Main Menu", "Sort Descending", "Sort Ascending", "Filter", "Delete"};
 	Iterator it = null; 
 	Clothing clothing = null;
 	Toy toy = null;
@@ -563,7 +592,7 @@ public void viewItems(String type)
 	LinkedList copy;
 	
 	String filterFieldString = filterField.getText();
-	LinkedList filteredList;
+	LinkedList filteredList = new LinkedList();
 	
 	
 	
@@ -576,7 +605,7 @@ public void viewItems(String type)
 	 	System.out.println("our last selection was...." + lastClothingSortingSelection );
 	 	clothingDropdown.setSelectedItem(lastClothingSortingSelection);
 		System.out.println("printing out the selected item after calling setSelectedItem" + clothingDropdown.getSelectedItem());
-		if(filterFieldString == null || filterFieldString == "")
+		if(filterFieldString == null || filterFieldString.equals(""))
 			filteredList = clothes;
 		else
 			filteredList = filter(filterFieldString, clothes, clothingDropdown.getSelectedItem().toString());
@@ -593,10 +622,10 @@ public void viewItems(String type)
 
 		 System.out.println("our last selection was...." + lastToySortingSelection );
 		 toyDropdown.setSelectedItem(lastToySortingSelection);
-		System.out.println("printing out the selected item after calling setSelectedItem" + toyDropdown.getSelectedItem());
+		 System.out.println("printing out the selected item after calling setSelectedItem" + toyDropdown.getSelectedItem());
 		
 		
-		if(filterFieldString == null || filterFieldString == "")
+		if(filterFieldString == null || filterFieldString.equals(""))
 			filteredList = toys;
 		else
 			filteredList = filter(filterFieldString, toys, toyDropdown.getSelectedItem().toString());
@@ -616,11 +645,15 @@ public void viewItems(String type)
 		System.out.println("our last selection was...." + lastBookSortingSelection );
 		bookDropdown.setSelectedItem(lastBookSortingSelection);
 		System.out.println("printing out the selected item after calling setSelectedItem" + bookDropdown.getSelectedItem());
-		if(filterFieldString == null || filterFieldString == "")
-			filteredList = books;
-		else
+		if(filterFieldString == null || filterFieldString.equals(""))
+			{
+				filteredList = books;
+			}
+		else 
+		{
 			filteredList = filter(filterFieldString, books, bookDropdown.getSelectedItem().toString());
-			
+			System.out.println("I suppose I called the filter function....."+ filterFieldString);
+		}
 		it = filteredList.iterator();
 		rows = new Object[filteredList.size()][numberOfColumns];
 		
@@ -692,11 +725,23 @@ public void viewItems(String type)
 			bookDropdown.setVisible(true);
 		}
 		Label filterLabel = new Label("\nFilter On Title:");
-	
+		Label deleteLabel = new Label ("\nDelete ItemId: ");
+		JTextField deletionField = new JTextField(10);
+		
 		panel.add(filterLabel);
 		panel.add(filterField);
+		panel.add(Box.createHorizontalStrut(20));
+		panel.add(deleteLabel);
+		
+		
+		panel.add(deletionField);
 		panel.setVisible(true);		 
+		
+		
 		int result = JOptionPane.showOptionDialog(null, panel, "Looking at"+type+"s", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, optionsWithSort, null);	
+		
+		
+			
 		String selection = "";
 		
 		System.out.println("this is the type of items we are viewing: "+type);
@@ -734,7 +779,13 @@ public void viewItems(String type)
 		
 		System.out.println("Selection: " + selection );
 				
-		sortingResultHandler(result, type, selection);
+		sortingResultHandler(result, type, selection, deletionField);
+	
+		
+		//System.out.println("Let's print out which row we are selecting" + table.getSelectedRow());
+		
+		//System.out.println(((Item)filteredList.get(table.getSelectedRow())).getTitle());
+		
 	}
 	return;	
 }
@@ -755,175 +806,6 @@ public static int loopThroughReturnIndex(String[] array, String selection)
 	}
 	return -1;
 }
-/**
- * This is a helper function to convert a LinkedList to an array.
- * It is used in the sort function. 
- * @param a
- * @return
- */
-public static Item[] convertToArray(LinkedList a)
-{
-	Item[] array = new Item[a.size()];
-	//Iterator it = a.iterator();
-	//it.next();
-	for(int i = 0; i< array.length; i++)
-	{
-		array[i] = (Item)a.get(i);	
-	}
-	
-	return array;
-}
-/**
- * This is a helper function. We use it in the sorting method.
- * @param array
- * @return
- */
-public static LinkedList convertToLinkedList(Item[] array)
-{
-	
-	LinkedList listToReturn = new LinkedList();
-
-	for(int i = 0; i < array.length; i++)
-	{
-		//System.out.println(((Book)array[i]).getTitle());	
-		listToReturn.add(array[i]);
-	}
-	return listToReturn;
-}
-
-
-/**
- * This function takes in three arguments and it compares the two items for purposes of the sorting.
- * This is a little bit tricky since it has been refactored down. This function is used in the sorting function to compare stuff for ordering. 
- * But, just think of this function as a wrapper around the compareTo function. 
- * This function handles 2 items, and compares the attributes of those 2 items (depending on what kind - Book, Clothing, Toy, etc. )
- * First - checks to see what kind of objects we are dealing with by using instanceof on the two items. (if both aren't of the same class, we exit the function)
- * Second - we check to see what kind of object the attribute is. A String or an Integer are the most common
- * Third - if it's a string, we use compareTo of the attribute we grabbed (via the user choice) for the specific objects to compare against
- * 			if it's an int, it just returns a negative value (-1) if the first val is less than the second val so that the sort method knows to keep looping through objects. 
- * 
- * This function will not make any sense to you unless you also look at the sort function
- * 
- * @return
- */
-public static int customComparator(Item a, Item b, String attributeToSortBy)
-{	
-	int comparatorValue = -1;
-	if(a instanceof Clothing && b instanceof Clothing) // handles clothing
-	{
-		if(((Clothing)a).attributeMap.get(attributeToSortBy) instanceof String)
-		{
-			comparatorValue = ((String)((Clothing)a).attributeMap.get(attributeToSortBy)).toUpperCase().compareTo(((String)((Clothing)b).attributeMap.get(attributeToSortBy)).toUpperCase());
-		}
-		else if(((Clothing)a).attributeMap.get(attributeToSortBy) instanceof Integer)
-		{	
-			//System.out.println("is a less than b? : " + ((Clothing)a).attributeMap.get(Integer.parseInt(attributeToSortBy)) + "  " + ((Clothing)b).attributeMap.get(Integer.parseInt(attributeToSortBy)));
-			if((Integer)((Clothing)a).attributeMap.get(attributeToSortBy) <= (Integer)((Clothing)b).attributeMap.get(attributeToSortBy))
-			{
-				System.out.println((Integer)((Clothing)a).attributeMap.get(attributeToSortBy) + "is less than " + (Integer)((Clothing)b).attributeMap.get(attributeToSortBy));
-				comparatorValue = -1;
-			}
-			else
-			{
-				comparatorValue = 1;
-			}
-		}
-	
-	}
-	else if (a instanceof Toy && b instanceof Toy) // Handles toys
-	{
-		if(((Toy)a).attributeMap.get(attributeToSortBy) instanceof String)
-		{
-			comparatorValue = ((String)((Toy)a).attributeMap.get(attributeToSortBy)).toUpperCase().compareTo(((String)((Toy)b).attributeMap.get(attributeToSortBy)).toUpperCase());
-		}
-		else if(((Toy)a).attributeMap.get(attributeToSortBy) instanceof Integer)
-		{	
-			//System.out.println("is a less than b? : " + ((Toy)a).attributeMap.get(Integer.parseInt(attributeToSortBy)) + "  " + ((Toy)b).attributeMap.get(Integer.parseInt(attributeToSortBy)));
-			if((Integer)((Toy)a).attributeMap.get(attributeToSortBy) <= (Integer)((Toy)b).attributeMap.get(attributeToSortBy))
-			{
-				System.out.println((Integer)((Toy)a).attributeMap.get(attributeToSortBy) + "is less than " + (Integer)((Toy)b).attributeMap.get(attributeToSortBy));
-				comparatorValue = -1;
-			}
-			else
-			{
-				comparatorValue = 1;
-			}
-		}		
-	}
-	else if (a instanceof Book && b instanceof Book) // Handles books
-	{	
-		if(((Book)a).attributeMap.get(attributeToSortBy) instanceof String)
-		{
-			comparatorValue = ((String)((Book)a).attributeMap.get(attributeToSortBy)).toUpperCase().compareTo(((String)((Book)b).attributeMap.get(attributeToSortBy)).toUpperCase());
-		}
-		else if(((Book)a).attributeMap.get(attributeToSortBy) instanceof Integer)
-		{	
-			//System.out.println("is a less than b? : " + ((Book)a).attributeMap.get(Integer.parseInt(attributeToSortBy)) + "  " + ((Book)b).attributeMap.get(Integer.parseInt(attributeToSortBy)));
-			if((Integer)((Book)a).attributeMap.get(attributeToSortBy) <= (Integer)((Book)b).attributeMap.get(attributeToSortBy))
-			{
-				System.out.println((Integer)((Book)a).attributeMap.get(attributeToSortBy) + "is less than " + (Integer)((Book)b).attributeMap.get(attributeToSortBy));
-				comparatorValue = -1;
-			}
-			else
-			{
-				comparatorValue = 1;
-			}
-		}
-	}
-	return comparatorValue;	
-}
-
-/**
- * This function takes a LinkedList -> preferably of books, clothes, etc. It will return the linkedlist in order of whatever attribute you provide 
- *
- * @param LinkedList a				<-- a linkedlist of items. very fancy. 
- * @param boolean ascending     		<-- set to true if we want ascending to be true
- * @param String attributeToSortBy	<-- we pass this a linkedlist of items and so attribute toSortBy picks the attribute to sort this whole thing by. 
- *
- *	This method also uses two methods, convertToLinkedList and convertToArray (in which we are reinventing the wheel a little bit)
- *	Perhaps in the future we can widdle this down to JUST sorting the linkedlist - but I do find that hard and maybe even impossible...
- *	Sorting an array allows for much more flexibility in accessing elements directly (which is inherent in sorting arrays)
- * @return
- *
- */
-public static LinkedList sort(LinkedList a, boolean ascending, String attributeToSortBy)
-{
-	Item[] array = convertToArray(a);
-	
-	for(int i=0; i<a.size(); i++)
-	{
-		int k = i;
-		if(ascending == true)
-		{
-			
-			while( k > 0 && customComparator(array[k], array[k-1], attributeToSortBy) <= 0)			
-			{
-				System.out.println(k);
-				Item temp = array[k];
-				array[k] = array[k-1];
-				array[k-1] = temp;
-				k--;
-			}
-		}
-		else // if we want descending
-		{
-			//array[k-1].getTitle().compareTo(array[k].getTitle())
-			while( k > 0 && customComparator(array[k-1], array[k], attributeToSortBy) <= 0)			
-			{
-				//System.out.println(k);
-				Item temp = array[k];
-				array[k] = array[k-1];
-				array[k-1] = temp;
-				k--;
-			}	
-		}
-	}
-	
-	
-	LinkedList listToReturn = convertToLinkedList(array);
-	return listToReturn;
-}
-
 
 
 
@@ -937,7 +819,7 @@ public static LinkedList sort(LinkedList a, boolean ascending, String attributeT
  * @param result
 
  */
-public void genericResultHandler(int result)
+public void genericResultHandler(int result) throws IOException
 {
 	if (result == 1)
 	{
@@ -953,6 +835,32 @@ public void genericResultHandler(int result)
 	}
 		
 }
+
+public void badInputDialog()
+{
+	Object[] options = { "Exit", "Main Menu"};
+	JPanel panel = new JPanel();
+	panel.add(new Label("Your input was invalid."));
+	int result = JOptionPane.showOptionDialog(null, panel, "Main Menu", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, null);
+	if (result == 1)
+	{
+		try 
+		{
+			
+			mainMenu();
+		}
+		catch(Exception a)
+		{
+			
+			a.printStackTrace();
+		}
+	}
+	else if (result == 0)
+	{
+		System.exit(0);
+	}
+}
+
 /**
  * This is a special kind of resulthandler I decided to make up 
  * It has the options sort ascending, sort descending, menu, and quit. 
@@ -963,14 +871,47 @@ public void genericResultHandler(int result)
  * @param sortCriteria
  *
  */
-public void sortingResultHandler(int result, String whatItemType, String sortCriteria)
+public void sortingResultHandler(int result, String whatItemType, String sortCriteria, JTextField field) throws IOException
 {
 	
-	
-	
+	if (result == 5) // We delete
+	{	
+		try
+		{
+			int itemToRemove = Integer.parseInt(field.getText());
+			
+			if(whatItemType.equals("Book"))
+			{
+				ItemRemover.removeFromLinkedList(books, itemToRemove );
+				ItemRemover.removeItemFromDb(itemToRemove, filepath);
+			}
+			else if(whatItemType.equals("Clothes"))
+			{
+				ItemRemover.removeFromLinkedList(clothes, itemToRemove );
+				ItemRemover.removeItemFromDb(itemToRemove, filepath);
+				
+			}
+			else if(whatItemType.equals("Toys"))
+			{
+				ItemRemover.removeFromLinkedList(toys, itemToRemove );
+				ItemRemover.removeItemFromDb(itemToRemove, filepath);
+				
+			}
+			
+		}
+		catch(NumberFormatException nfexception)
+		{
+			System.out.println("unable to remove item");
+			
+		}
+		catch (Exception b)
+		{
+			b.printStackTrace();
+		}
+		viewItems(whatItemType);
+	}
 	if (result == 4) // We filter
-	{
-		
+	{	
 		viewItems(whatItemType);
 	}
 	else if (result == 3 || result == 2) // someone hits the sort ascending button (3) or descending (2)
@@ -983,17 +924,19 @@ public void sortingResultHandler(int result, String whatItemType, String sortCri
 			
 		if(whatItemType.equals("Book"))
 		{
-			books = sort(books, ascending, sortCriteria);	
+			System.out.println("we are good up until here");
+			books = SortClass.mergeSort(books, ascending, sortCriteria);	
+			System.out.println("WE DIDNT GET BACK UHERE");
 			viewItems("Book");
 		}			
 		else if (whatItemType.equals("Clothing"))
 		{
-			clothes = sort(clothes, ascending, sortCriteria);
+			clothes = SortClass.mergeSort(clothes, ascending, sortCriteria);
 			viewItems("Clothing");
 		}			
 		else if (whatItemType.equals("Toy"))
 		{
-			toys = sort(toys, ascending, sortCriteria);
+			toys = SortClass.mergeSort(toys, ascending, sortCriteria);
 			viewItems("Toy");		
 		}
 	}
@@ -1013,4 +956,6 @@ public void sortingResultHandler(int result, String whatItemType, String sortCri
 }
 
 
+
 }
+

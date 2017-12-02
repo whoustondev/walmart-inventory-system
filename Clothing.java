@@ -11,11 +11,13 @@ public class Clothing extends Item
 	private int qtyLarge;
 	private int qtyExtraLarge;
 	private int totalQty;
-	public static String [] childClassAttributes = {"Title","Brand","Color", "Qty Small", "Qty Medium", "Qty Large", "Qty XL"};
+	public static String [] childClassAttributes = {"ItemId", "Title","Brand","Color", "Qty Small", "Qty Medium", "Qty Large", "Qty XL"};
 	Map<String, Object> attributeMap = new HashMap<String, Object>();
 	public Clothing(String title, String brand, String color, int qtySmall, int qtyMedium, int qtyLarge, int qtyExtraLarge)
 	{
-
+		attributeMap.put("ItemId", this.getId());
+		
+		attributeMap.get("Title");
 		this.setTitle(title);
 		this.setType("Clothing");
 		this.brand = brand;
@@ -107,19 +109,22 @@ public class Clothing extends Item
 	
 	public Object getAttributeByIndex(int index)
 	{
+		
 		if(index == 0)
-			return getTitle();
+			return getId();
 		else if(index == 1)
-			return getBrand();
+			return getTitle();
 		else if(index == 2)
-			return getColor();
+			return getBrand();
 		else if(index == 3)
-			return getQtySmall();
+			return getColor();
 		else if(index == 4)
-			return getQtyMedium();
+			return getQtySmall();
 		else if(index == 5)
-			return getQtyLarge();
+			return getQtyMedium();
 		else if(index == 6)
+			return getQtyLarge();
+		else if(index == 7)
 			return getQtyExtraLarge();
 		
 		return null;
@@ -127,6 +132,6 @@ public class Clothing extends Item
 	
 	public String toString()
 	{
-		return this.getType()+"; " +this.getTitle()+"; "+this.getBrand()+"; "+this.getColor()+"; "+this.getQtySmall()+"; "+this.getQtyMedium()+"; "+this.getQtyLarge()+"; "+this.getQtyExtraLarge()+"\n";	
+		return this.getType()+"; " +this.getId() + "; " + this.getTitle()+"; "+this.getBrand()+"; "+this.getColor()+"; "+this.getQtySmall()+"; "+this.getQtyMedium()+"; "+this.getQtyLarge()+"; "+this.getQtyExtraLarge()+"\n";	
 	}
 }

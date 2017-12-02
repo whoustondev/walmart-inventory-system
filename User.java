@@ -1,6 +1,5 @@
 
-package newpackage;
-
+import java.io.IOException;
 
 import java.util.Hashtable;
 
@@ -61,7 +60,8 @@ public class User {
     }
 
     public void setUserid(int userid) {
-        this.userid = userid;
+        //this.userid = userid;
+        this.userid =total;
     }
 
     public String getFirstName() {
@@ -69,7 +69,7 @@ public class User {
     }
 
     public boolean setFirstName(String firstName) {
-        this.firstName = firstName;
+        //this.firstName = firstName;
         //return true;
 
         for (int i = 0; i < firstName.length(); i++) {
@@ -82,11 +82,12 @@ public class User {
     }
 
     public String getLastName() {
+        
         return lastName;
     }
 
     public boolean setLastName(String lastName) {
-        this.lastName = lastName;
+        //this.lastName = lastName;
         //return true;
 
         for (int i = 0; i < lastName.length(); i++) {
@@ -122,6 +123,7 @@ public class User {
 
     public boolean setType(int type) {
         boolean isValid = false;
+        try{
         if (type == 1) {
             this.type = "Administrator";
             isValid = true;
@@ -129,6 +131,9 @@ public class User {
             this.type = "Employee";
             isValid = true;
         }
+        
+        }catch(NumberFormatException e){isValid = false;}
+        
 
         return isValid;
     }
@@ -137,12 +142,13 @@ public class User {
         return total;
     }
 
+    @Override
     public String toString() {
-        return "Username : " + this.username
-                + "\nUserid : " + this.userid
-                + "\nFirst Name : " + this.firstName
-                + "\nLast Name :  " + this.lastName
-                + "\nType : " + this.type;
+        return "Username : " + this.getUsername()
+                + "\nUserid : " + this.getUserid()
+                + "\nFirst Name : " + this.getFirstName()
+                + "\nLast Name :  " + this.getLastName()
+                + "\nType : " + this.getType();
     }
 
 }
