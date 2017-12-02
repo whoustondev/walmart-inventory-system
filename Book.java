@@ -16,8 +16,9 @@ public class Book extends Item
 		attributeMap.put("ItemId", this.getId());
 		attributeMap.put("Title", title);
 		attributeMap.put("Author", author);
-		attributeMap.put("Genre", genre);
 		attributeMap.put("Quantity", quantity);
+		attributeMap.put("Genre", genre);
+
 		
 		
 	}

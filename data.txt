@@ -1,7 +1,8 @@
 Toy; 6; Laser Challenge; 12; 8
-Book; 8; 1984; George Orwell; 12; Science Fiction
 Book; 11; Michael Jackson : Chillest man alive; John Doe; 3000; Fiction
 Book; 12; Life on the Edge; Will Houston; 78; Fiction
 Book; 13; Thomas's Calculus; Addison Wesley; 2; Math
 Book; 14; Brave New World; Alduos Huxley; 22; SciFi
 Book; 15; Barney; A Little Kid; 21; Children
+Clothing; 16; Boardshorts; Reef; Black; 12; 23; 34; 66
+Book; 17; Barney; a Child; 23; Children
