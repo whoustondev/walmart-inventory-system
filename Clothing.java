@@ -1,6 +1,11 @@
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * @author whouston
+ *
+ */
 public class Clothing extends Item
 {
 	

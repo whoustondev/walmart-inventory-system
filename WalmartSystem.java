@@ -13,7 +13,9 @@ import java.util.*;
  *	3. See if there is a way to hide values in the JTextField that holds a password
  *	5. Order new Items.
  *	9. fix buttons so that the quit button is on the left and that one of the buttons is highlighted
-
+ * 
+ * @author whouston
+ *
  */
 public class WalmartSystem
 {
@@ -345,7 +347,7 @@ public class WalmartSystem
 	public void gatherItems(String filepath)
 	{
 		
-		int highestIdNumber = 0; /** this int here is to find out the highest ID that is stored in the DB. Then, we set the Item class's static variable to be this for newly created objects**/
+		int highestIdNumber = 0; /** this int here is to find out the highest ID that is stored in the DB. Then, we sssssset the Item class's static variable to be this for newly created objects**/
 	    	try 
 	    	{	    		
 	    		BufferedReader br = new BufferedReader(new FileReader(new File(filepath)));

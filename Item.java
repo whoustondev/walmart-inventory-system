@@ -1,4 +1,8 @@
-
+/**
+ * 
+ * @author whouston
+ *
+ */
 public abstract class Item 
 {
 	private int quantity;
