@@ -1,4 +1,6 @@
 import java.util.Comparator;
+
+
 /**
  * This comparator class is very special. The actual compare function isn't very useful, since all it does is compare user IDs.
  * And let's face it. An Item has MANY attributes one might want to compare.
@@ -6,6 +8,8 @@ import java.util.Comparator;
  * Below, we have cutomComparator which is good for sorting a list of items. 
  * It will compare two items and take in an attribute. 
  * Whatever attribute you give it, it will compare via that item's attribute. 
+ * 
+ * 
  * @author whouston
  *
  */

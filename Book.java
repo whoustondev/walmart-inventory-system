@@ -1,4 +1,10 @@
 import java.util.*;
+
+/**
+ * 
+ * @author whouston
+ *
+ */
 public class Book extends Item 
 
 {
