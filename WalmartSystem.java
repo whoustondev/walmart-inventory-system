@@ -37,9 +37,9 @@ public class WalmartSystem
 	JComboBox bookDropdown = new JComboBox(Book.childClassAttributes);
 	JComboBox toyDropdown = new JComboBox(Toy.childClassAttributes);
 	JTextField filterField = new JTextField(10);
-	private String filepath = "./IT-306WalmartInventorySystem/data.txt";
+	private String filepath = "./data.txt";
 
-	private String userFilePath = "./IT-306WalmartInventorySystem/userdb.txt";
+	private String userFilePath = "./userdb.txt";
 	private String username = "";
 
     HashMap userMap = Login.getUsers(userFilePath);
